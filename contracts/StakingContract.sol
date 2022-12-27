@@ -26,7 +26,6 @@ contract StakingContract is
 
     /***** Variables *****/
 
-    address public owner;
     uint256 public totalStaked;
     uint256 public duration;
     uint256 public finishAt;

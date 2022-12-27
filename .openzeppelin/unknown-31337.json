@@ -5,12 +5,82 @@
       "address": "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
       "txHash": "0x1f23f1740b754f5bc0fd7fbc91028314870868cc6352b279764045f20bf9e243",
       "kind": "uups"
+    },
+    {
+      "address": "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
+      "txHash": "0x2ef6bc444659aa312a6f12ca05e0518888117c9789833d3ab761bae4f58bc237",
+      "kind": "uups"
+    },
+    {
+      "address": "0x610178dA211FEF7D417bC0e6FeD39F05609AD788",
+      "txHash": "0x1eba3661085393b58dfb82852cec321d931cb58efd9c2e5f06b4ed43a870627f",
+      "kind": "uups"
+    },
+    {
+      "address": "0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82",
+      "txHash": "0x719c0be88ab5195996c2268105946c1f660125223f8bcc6a8fe7a84a144bfa74",
+      "kind": "uups"
+    },
+    {
+      "address": "0x4ed7c70F96B99c776995fB64377f0d4aB3B0e1C1",
+      "txHash": "0xfa01ffe4a820e3a26b5fb5cc5c85187af718580a170146bf227df7f09c77490f",
+      "kind": "uups"
+    },
+    {
+      "address": "0x322813Fd9A801c5507c9de605d63CEA4f2CE6c44",
+      "txHash": "0x4443bfa8324f5fef63d64f1bb110f1cbe5cdc6ea8e768d34175d6847ef6e2c78",
+      "kind": "uups"
+    },
+    {
+      "address": "0xc5a5C42992dECbae36851359345FE25997F5C42d",
+      "txHash": "0xe184b3821cde39c93bedbc204a3b07d55d2fb8e13d3bee4311c0a86545299603",
+      "kind": "uups"
+    },
+    {
+      "address": "0xa82fF9aFd8f496c3d6ac40E2a0F282E47488CFc9",
+      "txHash": "0x29cf4f6ba9c16c671324c6dd4c7afee37812be2161e5bec5050b2ab6283ff476",
+      "kind": "uups"
+    },
+    {
+      "address": "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
+      "txHash": "0xdd86ba28972ae79a9bd902d6b4da7f2fb844152c4c39e405836159d2c1a14521",
+      "kind": "uups"
+    },
+    {
+      "address": "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
+      "txHash": "0xd700a5693fcf7f00c5f2fc87c8a7a6dc9736065061fda210ef67c838792abd9b",
+      "kind": "uups"
+    },
+    {
+      "address": "0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0",
+      "txHash": "0x5d98cef02baea5d3ee60665c70a1a60eb69ececbae0d563fcd4967f614f08516",
+      "kind": "uups"
+    },
+    {
+      "address": "0x9A9f2CCfdE556A7E9Ff0848998Aa4a0CFD8863AE",
+      "txHash": "0xb8bfdadc083d440e14bdd579d359e8849b1e22aca31a0d3edd7b92e5e29bc198",
+      "kind": "uups"
+    },
+    {
+      "address": "0xa85233C63b9Ee964Add6F2cffe00Fd84eb32338f",
+      "txHash": "0x1c677403b137c54e205cfdcfde9d3f42587003f118a75cf8f2efdfe15cb0fbd0",
+      "kind": "uups"
+    },
+    {
+      "address": "0x67d269191c92Caf3cD7723F116c85e6E9bf55933",
+      "txHash": "0x2789e7f7ce8427151bc8000045a7773e8bfbca4f332342de108448770c7a2e4f",
+      "kind": "uups"
+    },
+    {
+      "address": "0x1613beB3B2C4f22Ee086B2b38C1476A3cE7f78E8",
+      "txHash": "0x864dcd572a4402f4e8723867663bc80a4ba9127cb045d09911bc30815b048cbc",
+      "kind": "uups"
     }
   ],
   "impls": {
-    "92592425ddd008dc8c429f592933e8f5a4c9ebf0504430bb2d3f61e47233ba7e": {
-      "address": "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
-      "txHash": "0x9bc1d3d87b2262cf0c055af491245589e9b78a18b8f5e025e697819b8a9f12a8",
+    "415a639963b7719f7dac05d549e461e9f516d24a7ee03583dd805dc4d375a8e2": {
+      "address": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
+      "txHash": "0x2d19318b35e5fe639cec1d898b129248c7f06dd271b820b9469e26c2ce2da2cb",
       "layout": {
         "solcVersion": "0.8.15",
         "storage": [
@@ -128,15 +198,15 @@
             "src": "contracts/StakingContract.sol:22"
           },
           {
-            "label": "owner",
+            "label": "totalStaked",
             "offset": 0,
             "slot": "353",
-            "type": "t_address",
+            "type": "t_uint256",
             "contract": "StakingContract",
             "src": "contracts/StakingContract.sol:29"
           },
           {
-            "label": "totalStaked",
+            "label": "duration",
             "offset": 0,
             "slot": "354",
             "type": "t_uint256",
@@ -144,7 +214,7 @@
             "src": "contracts/StakingContract.sol:30"
           },
           {
-            "label": "duration",
+            "label": "finishAt",
             "offset": 0,
             "slot": "355",
             "type": "t_uint256",
@@ -152,7 +222,7 @@
             "src": "contracts/StakingContract.sol:31"
           },
           {
-            "label": "finishAt",
+            "label": "updatedAt",
             "offset": 0,
             "slot": "356",
             "type": "t_uint256",
@@ -160,7 +230,7 @@
             "src": "contracts/StakingContract.sol:32"
           },
           {
-            "label": "updatedAt",
+            "label": "rewardRate",
             "offset": 0,
             "slot": "357",
             "type": "t_uint256",
@@ -168,7 +238,7 @@
             "src": "contracts/StakingContract.sol:33"
           },
           {
-            "label": "rewardRate",
+            "label": "rewardPerTokenStored",
             "offset": 0,
             "slot": "358",
             "type": "t_uint256",
@@ -176,15 +246,15 @@
             "src": "contracts/StakingContract.sol:34"
           },
           {
-            "label": "rewardPerTokenStored",
+            "label": "balanceOf",
             "offset": 0,
             "slot": "359",
-            "type": "t_uint256",
+            "type": "t_mapping(t_address,t_uint256)",
             "contract": "StakingContract",
-            "src": "contracts/StakingContract.sol:35"
+            "src": "contracts/StakingContract.sol:50"
           },
           {
-            "label": "balanceOf",
+            "label": "userRewardPerTokenPaid",
             "offset": 0,
             "slot": "360",
             "type": "t_mapping(t_address,t_uint256)",
@@ -192,20 +262,12 @@
             "src": "contracts/StakingContract.sol:51"
           },
           {
-            "label": "userRewardPerTokenPaid",
+            "label": "rewards",
             "offset": 0,
             "slot": "361",
             "type": "t_mapping(t_address,t_uint256)",
             "contract": "StakingContract",
             "src": "contracts/StakingContract.sol:52"
-          },
-          {
-            "label": "rewards",
-            "offset": 0,
-            "slot": "362",
-            "type": "t_mapping(t_address,t_uint256)",
-            "contract": "StakingContract",
-            "src": "contracts/StakingContract.sol:53"
           }
         ],
         "types": {
@@ -274,9 +336,9 @@
         }
       }
     },
-    "5c1832db49848ceb2b57bcedd13a2b7b9c0c19db77106c922f8ab56fabd7a164": {
-      "address": "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
-      "txHash": "0x3922dbba885bf15a12a3b4b3977f0079d129cc6c5ba4fa01ff29d1fc9a2ac45c",
+    "adb807fb2a18050b4817b13cdeb68f3d4ab119b03c9148c92309a28aac95492e": {
+      "address": "0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6",
+      "txHash": "0x2c0210421973a6f5d1e0e851c7eeb8e3cd4ed0e1ee613d484272b5d4525d407a",
       "layout": {
         "solcVersion": "0.8.15",
         "storage": [
@@ -394,15 +456,15 @@
             "src": "contracts/StakingContract.sol:22"
           },
           {
-            "label": "owner",
+            "label": "totalStaked",
             "offset": 0,
             "slot": "353",
-            "type": "t_address",
+            "type": "t_uint256",
             "contract": "StakingContract",
             "src": "contracts/StakingContract.sol:29"
           },
           {
-            "label": "totalStaked",
+            "label": "duration",
             "offset": 0,
             "slot": "354",
             "type": "t_uint256",
@@ -410,7 +472,7 @@
             "src": "contracts/StakingContract.sol:30"
           },
           {
-            "label": "duration",
+            "label": "finishAt",
             "offset": 0,
             "slot": "355",
             "type": "t_uint256",
@@ -418,7 +480,7 @@
             "src": "contracts/StakingContract.sol:31"
           },
           {
-            "label": "finishAt",
+            "label": "updatedAt",
             "offset": 0,
             "slot": "356",
             "type": "t_uint256",
@@ -426,7 +488,7 @@
             "src": "contracts/StakingContract.sol:32"
           },
           {
-            "label": "updatedAt",
+            "label": "rewardRate",
             "offset": 0,
             "slot": "357",
             "type": "t_uint256",
@@ -434,7 +496,7 @@
             "src": "contracts/StakingContract.sol:33"
           },
           {
-            "label": "rewardRate",
+            "label": "rewardPerTokenStored",
             "offset": 0,
             "slot": "358",
             "type": "t_uint256",
@@ -442,15 +504,15 @@
             "src": "contracts/StakingContract.sol:34"
           },
           {
-            "label": "rewardPerTokenStored",
+            "label": "balanceOf",
             "offset": 0,
             "slot": "359",
-            "type": "t_uint256",
+            "type": "t_mapping(t_address,t_uint256)",
             "contract": "StakingContract",
-            "src": "contracts/StakingContract.sol:35"
+            "src": "contracts/StakingContract.sol:50"
           },
           {
-            "label": "balanceOf",
+            "label": "userRewardPerTokenPaid",
             "offset": 0,
             "slot": "360",
             "type": "t_mapping(t_address,t_uint256)",
@@ -458,20 +520,12 @@
             "src": "contracts/StakingContract.sol:51"
           },
           {
-            "label": "userRewardPerTokenPaid",
+            "label": "rewards",
             "offset": 0,
             "slot": "361",
             "type": "t_mapping(t_address,t_uint256)",
             "contract": "StakingContract",
             "src": "contracts/StakingContract.sol:52"
-          },
-          {
-            "label": "rewards",
-            "offset": 0,
-            "slot": "362",
-            "type": "t_mapping(t_address,t_uint256)",
-            "contract": "StakingContract",
-            "src": "contracts/StakingContract.sol:53"
           }
         ],
         "types": {

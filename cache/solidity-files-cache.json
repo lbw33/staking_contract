@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/lukewickens-pillar/Documents/personal_projects/staking_contract/contracts/StakingContract.sol": {
-      "lastModificationDate": 1672165234933,
-      "contentHash": "6ae880ff79eec15ff5f276557d848963",
+      "lastModificationDate": 1672172280533,
+      "contentHash": "15ee7c81d5b361a2874eb331b8d9bf79",
       "sourceName": "contracts/StakingContract.sol",
       "solcConfig": {
         "version": "0.8.15",
@@ -988,8 +988,8 @@
       ]
     },
     "/Users/lukewickens-pillar/Documents/personal_projects/staking_contract/contracts/helpers/StakingContractV2Test.sol": {
-      "lastModificationDate": 1672164627088,
-      "contentHash": "84e0f3fa7f818d497f410906e8388208",
+      "lastModificationDate": 1672172361646,
+      "contentHash": "ca731091be70943b98b6a94dba2313bb",
       "sourceName": "contracts/helpers/StakingContractV2Test.sol",
       "solcConfig": {
         "version": "0.8.15",
