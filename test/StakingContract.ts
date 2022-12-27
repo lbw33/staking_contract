@@ -1,6 +1,7 @@
 import { expect } from "chai";
 import { BigNumber, Contract } from "ethers";
 import { ethers, upgrades } from "hardhat";
+import { time } from "@nomicfoundation/hardhat-network-helpers";
 import type { SignerWithAddress } from "@nomiclabs/hardhat-ethers/dist/src/signer-with-address";
 import {
   StakingContractV2Test__factory,
@@ -18,7 +19,10 @@ describe("Staking Contract", async () => {
   let stakingContract: Contract;
   let stakeToken: TestToken;
   let rewardToken: TestToken;
-  const transferAmount = ethers.utils.parseEther("100");
+  const AC_REVERT = /AccessControl: account .* is missing role .*/;
+  const TRANSFER_AMOUNT = ethers.utils.parseEther("100");
+  const REWARD_AMOUNT = ethers.utils.parseEther("50");
+  const REWARD_DURATION = 1000;
 
   beforeEach(async () => {
     [deployer, user1, user2] = await ethers.getSigners();
@@ -33,20 +37,20 @@ describe("Staking Contract", async () => {
     ]);
 
     // Transfer 100 STK tokens to user1
-    await stakeToken.approve(deployer.address, transferAmount);
+    await stakeToken.approve(deployer.address, TRANSFER_AMOUNT);
     await stakeToken.transferFrom(
       deployer.address,
       user1.address,
-      transferAmount
+      TRANSFER_AMOUNT
     );
 
     // Sanity check
-    expect(await stakeToken.balanceOf(user1.address)).to.equal(transferAmount);
+    expect(await stakeToken.balanceOf(user1.address)).to.equal(TRANSFER_AMOUNT);
 
     // Approval for user1 => StakingContract
     await stakeToken
       .connect(user1)
-      .approve(stakingContract.address, transferAmount);
+      .approve(stakingContract.address, TRANSFER_AMOUNT);
   });
 
   describe("Upgradeability", async () => {
@@ -119,7 +123,7 @@ describe("Staking Contract", async () => {
   describe("Pausability", async () => {
     it("should not allow an entity without `ADMIN_ROLE` to pause", async () => {
       await expect(stakingContract.connect(user1).pause()).to.be.revertedWith(
-        /AccessControl: account .* is missing role .*/
+        AC_REVERT
       );
     });
 
@@ -151,7 +155,43 @@ describe("Staking Contract", async () => {
   });
 
   describe("setRewardsDuration", async () => {
-    // should set
-    // should trigger custom error
+    it("should only allow `ADMIN_ROLE` to set reward duration", async () => {
+      await expect(
+        stakingContract.connect(user1).setRewardsDuration(1000)
+      ).to.be.revertedWith(AC_REVERT);
+    });
+
+    it.skip("should revert if current time < finishedAt", async () => {
+      console.log(`finished at: ${await stakingContract.finishAt()}`);
+      // await expect(stakingContract.setRewardsDuration());
+    });
+
+    it("should set reward duration", async () => {
+      await stakingContract.setRewardsDuration(1000);
+      expect(await stakingContract.duration()).to.equal(1000);
+    });
+  });
+
+  describe("notifyRewardAmount", async () => {
+    it("should only allow `ADMIN_ROLE` to notify reward amount", async () => {
+      await expect(
+        stakingContract.connect(user1).notifyRewardAmount(REWARD_AMOUNT)
+      ).to.be.revertedWith(AC_REVERT);
+    });
+
+    it("should be successful", async () => {
+      await rewardToken.transfer(stakingContract.address, REWARD_AMOUNT);
+      expect(await rewardToken.balanceOf(stakingContract.address)).to.equal(
+        REWARD_AMOUNT
+      );
+      await stakingContract.setRewardsDuration(REWARD_DURATION);
+      await stakingContract.notifyRewardAmount(REWARD_AMOUNT);
+      expect(await stakingContract.finishAt()).to.equal(
+        (await time.latest()) + REWARD_DURATION
+      );
+      expect(await stakingContract.updatedAt()).to.equal(await time.latest());
+      // 50000000000000000n = REWARD_AMOUNT / REWARD_DURATION
+      expect(await stakingContract.rewardRate()).to.equal(50000000000000000n);
+    });
   });
 });
