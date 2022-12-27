@@ -1,0 +1,31 @@
+{
+  "name": "staking_contract",
+  "version": "1.0.0",
+  "description": "Simple staking contract",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lbw33/staking_contract.git"
+  },
+  "keywords": [
+    "staking",
+    "contract",
+    "erc20"
+  ],
+  "author": "lbw33",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lbw33/staking_contract/issues"
+  },
+  "homepage": "https://github.com/lbw33/staking_contract#readme",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^2.0.0",
+    "@openzeppelin/contracts": "^4.8.0",
+    "@openzeppelin/contracts-upgradeable": "^4.8.0",
+    "@openzeppelin/hardhat-upgrades": "^1.22.0",
+    "@openzeppelin/test-helpers": "^0.5.16"
+  }
+}
