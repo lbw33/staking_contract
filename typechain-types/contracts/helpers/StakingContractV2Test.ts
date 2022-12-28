@@ -370,6 +370,7 @@ export interface StakingContractV2TestInterface extends utils.Interface {
     "Staked(address,uint256)": EventFragment;
     "Unpaused(address)": EventFragment;
     "Upgraded(address)": EventFragment;
+    "Withdrawn(address,uint256)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "AdminChanged"): EventFragment;
@@ -383,6 +384,7 @@ export interface StakingContractV2TestInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "Staked"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Unpaused"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Upgraded"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Withdrawn"): EventFragment;
 }
 
 export interface AdminChangedEventObject {
@@ -490,6 +492,17 @@ export interface UpgradedEventObject {
 export type UpgradedEvent = TypedEvent<[string], UpgradedEventObject>;
 
 export type UpgradedEventFilter = TypedEventFilter<UpgradedEvent>;
+
+export interface WithdrawnEventObject {
+  account: string;
+  amount: BigNumber;
+}
+export type WithdrawnEvent = TypedEvent<
+  [string, BigNumber],
+  WithdrawnEventObject
+>;
+
+export type WithdrawnEventFilter = TypedEventFilter<WithdrawnEvent>;
 
 export interface StakingContractV2Test extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -1072,6 +1085,12 @@ export interface StakingContractV2Test extends BaseContract {
     Upgraded(
       implementation?: PromiseOrValue<string> | null
     ): UpgradedEventFilter;
+
+    "Withdrawn(address,uint256)"(
+      account?: null,
+      amount?: null
+    ): WithdrawnEventFilter;
+    Withdrawn(account?: null, amount?: null): WithdrawnEventFilter;
   };
 
   estimateGas: {

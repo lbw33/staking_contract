@@ -9,6 +9,7 @@ import {
   TestToken,
   TestToken__factory,
 } from "../typechain-types";
+import { beforeEach } from "mocha";
 
 context("Staking Contract", async () => {
   let deployer: SignerWithAddress;
@@ -25,6 +26,7 @@ context("Staking Contract", async () => {
   const TRANSFER_AMOUNT = ethers.utils.parseEther("100");
   const REWARD_AMOUNT = ethers.utils.parseEther("50");
   const REWARD_DURATION = 1000;
+  const STAKE_AMOUNT = ethers.utils.parseEther("2");
 
   beforeEach(async () => {
     [deployer, user1, user2] = await ethers.getSigners();
@@ -231,7 +233,110 @@ context("Staking Contract", async () => {
     });
   });
 
-  describe("stake", async () => {});
+  describe("stake", async () => {
+    it("should revert with AmountCannotBeZero if stake amount is zero", async () => {
+      await expect(
+        stakingContract.connect(user1).stake(0)
+      ).to.be.revertedWithCustomError(stakingContract, "AmountCannotBeZero");
+    });
 
-  describe("withdraw", async () => {});
+    it("should update user1 balance and state vars on successful stake", async () => {
+      const user1PreBal = await stakeToken.balanceOf(user1.address);
+      const stakingContractPreBal = await stakeToken.balanceOf(
+        stakingContract.address
+      );
+
+      await stakingContract.connect(user1).stake(STAKE_AMOUNT);
+
+      const user1PostBal = await stakeToken.balanceOf(user1.address);
+      const stakingContractPostBal = await stakeToken.balanceOf(
+        stakingContract.address
+      );
+
+      expect(parseInt(user1PostBal.toString())).to.equal(
+        parseInt(user1PreBal.toString()) - parseInt(STAKE_AMOUNT.toString())
+      );
+      expect(parseInt(stakingContractPostBal.toString())).to.equal(
+        parseInt(stakingContractPreBal.toString()) +
+          parseInt(STAKE_AMOUNT.toString())
+      );
+      expect(await stakingContract.totalStaked()).to.equal(STAKE_AMOUNT);
+      expect(await stakingContract.balanceOf(user1.address)).to.equal(
+        STAKE_AMOUNT
+      );
+      // TODO: test for updateReward modifier
+      expect(await stakingContract.rewardPerTokenStored()).gt(
+        BigNumber.from(0)
+      );
+      const updatedAt = await stakingContract.updatedAt();
+      expect(parseInt(updatedAt.toString())).to.equal(await time.latest());
+      expect(
+        await stakingContract.userRewardPerTokenPaid(user1.address)
+      ).to.equal(await stakingContract.rewardPerTokenStored());
+      expect(await stakingContract.rewards(user1.address)).to.equal(
+        await stakingContract.earned(user1.address)
+      );
+    });
+
+    it("should emit event on successful stake", async () => {
+      await expect(stakingContract.connect(user1).stake(STAKE_AMOUNT))
+        .to.emit(stakingContract, "Staked")
+        .withArgs(user1.address, STAKE_AMOUNT);
+    });
+  });
+
+  describe("withdraw", async () => {
+    beforeEach(async () => {
+      await rewardToken.transfer(stakingContract.address, REWARD_AMOUNT);
+      await stakingContract.setRewardsDuration(REWARD_DURATION);
+      await stakingContract.notifyRewardAmount(REWARD_AMOUNT);
+      await stakingContract.connect(user1).stake(STAKE_AMOUNT);
+    });
+
+    it("should revert with AmountCannotBeZero if withdraw amount is zero", async () => {
+      await expect(
+        stakingContract.connect(user1).withdraw(0)
+      ).to.be.revertedWithCustomError(stakingContract, "AmountCannotBeZero");
+    });
+
+    it("should update user1 balance and state vars on successful withdrawal", async () => {
+      const user1PreBal = await stakeToken.balanceOf(user1.address);
+      const stakingContractPreBal = await stakeToken.balanceOf(
+        stakingContract.address
+      );
+
+      await stakingContract.connect(user1).withdraw(STAKE_AMOUNT);
+
+      const user1PostBal = await stakeToken.balanceOf(user1.address);
+      const stakingContractPostBal = await stakeToken.balanceOf(
+        stakingContract.address
+      );
+
+      expect(parseInt(user1PreBal.toString())).to.equal(
+        parseInt(user1PostBal.toString()) - parseInt(STAKE_AMOUNT.toString())
+      );
+      expect(parseInt(stakingContractPostBal.toString())).to.equal(
+        parseInt(stakingContractPreBal.toString()) -
+          parseInt(STAKE_AMOUNT.toString())
+      );
+      expect(await stakingContract.totalStaked()).to.equal(0);
+      expect(await stakingContract.balanceOf(user1.address)).to.equal(0);
+      // TODO: test for updateReward modifier
+      expect(await stakingContract.rewardPerTokenStored()).gt(0);
+      const updatedAt = await stakingContract.updatedAt();
+      expect(parseInt(updatedAt.toString())).to.equal(await time.latest());
+      expect(
+        await stakingContract.userRewardPerTokenPaid(user1.address)
+      ).to.equal(await stakingContract.rewardPerTokenStored());
+      expect(await stakingContract.rewards(user1.address)).to.equal(
+        await stakingContract.earned(user1.address)
+      );
+    });
+
+    it("should emit event on successful withdraw", async () => {
+      await expect(stakingContract.connect(user1).withdraw(STAKE_AMOUNT))
+        .to.emit(stakingContract, "Withdrawn")
+        .withArgs(user1.address, STAKE_AMOUNT);
+    });
+  });
 });

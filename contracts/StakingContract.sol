@@ -53,6 +53,7 @@ contract StakingContract is
 
     /***** Events *****/
     event Staked(address account, uint256 amount);
+    event Withdrawn(address account, uint256 amount);
     event RewardsWithdrawn(address account, uint256 amount);
 
     /***** Custom Errors *****/
@@ -162,7 +163,8 @@ contract StakingContract is
         if (_amount <= 0) revert AmountCannotBeZero();
         balanceOf[msg.sender] -= _amount;
         totalStaked -= _amount;
-        rewardToken.safeTransferFrom(address(this), msg.sender, _amount);
+        stakingToken.safeTransfer(msg.sender, _amount);
+        emit Withdrawn(msg.sender, _amount);
     }
 
     function lastTimeRewardApplicable() public view returns (uint256) {
