@@ -988,8 +988,8 @@
       ]
     },
     "/Users/lukewickens-pillar/Documents/personal_projects/staking_contract/contracts/helpers/StakingContractV2Test.sol": {
-      "lastModificationDate": 1672172361646,
-      "contentHash": "ca731091be70943b98b6a94dba2313bb",
+      "lastModificationDate": 1672225834440,
+      "contentHash": "b068a68c3fe536c45de7575de9d58f2f",
       "sourceName": "contracts/helpers/StakingContractV2Test.sol",
       "solcConfig": {
         "version": "0.8.15",
@@ -1016,6 +1016,7 @@
         }
       },
       "imports": [
+        "@openzeppelin/contracts-upgradeable/token/ERC20/utils/SafeERC20Upgradeable.sol",
         "../StakingContract.sol"
       ],
       "versionPragmas": [

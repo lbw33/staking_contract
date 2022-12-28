@@ -10,15 +10,17 @@ import {
   TestToken__factory,
 } from "../typechain-types";
 
-describe("Staking Contract", async () => {
+context("Staking Contract", async () => {
   let deployer: SignerWithAddress;
   let user1: SignerWithAddress;
   let user2: SignerWithAddress;
   let StakingContract: StakingContract__factory;
+  let StakingContractV2Test: StakingContractV2Test__factory;
   let TestToken: TestToken__factory;
   let stakingContract: Contract;
   let stakeToken: TestToken;
   let rewardToken: TestToken;
+  let stakingContractTester: Contract;
   const AC_REVERT = /AccessControl: account .* is missing role .*/;
   const TRANSFER_AMOUNT = ethers.utils.parseEther("100");
   const REWARD_AMOUNT = ethers.utils.parseEther("50");
@@ -32,6 +34,14 @@ describe("Staking Contract", async () => {
 
     StakingContract = await ethers.getContractFactory("StakingContract");
     stakingContract = await upgrades.deployProxy(StakingContract, [
+      stakeToken.address,
+      rewardToken.address,
+    ]);
+
+    StakingContractV2Test = await ethers.getContractFactory(
+      "StakingContractV2Test"
+    );
+    stakingContractTester = await upgrades.deployProxy(StakingContractV2Test, [
       stakeToken.address,
       rewardToken.address,
     ]);
@@ -161,9 +171,18 @@ describe("Staking Contract", async () => {
       ).to.be.revertedWith(AC_REVERT);
     });
 
-    it.skip("should revert if current time < finishedAt", async () => {
-      console.log(`finished at: ${await stakingContract.finishAt()}`);
-      // await expect(stakingContract.setRewardsDuration());
+    it("should revert if current time < finishedAt", async () => {
+      const sevenDays = 7 * 24 * 60 * 60;
+      const blockNum = await ethers.provider.getBlockNumber();
+      const block = await ethers.provider.getBlock(blockNum);
+      const timestamp = block.timestamp;
+      await stakingContractTester.setFinishAt(timestamp + sevenDays);
+      await expect(
+        stakingContractTester.setRewardsDuration(1000)
+      ).to.be.revertedWithCustomError(
+        stakingContractTester,
+        "RewardDurationNotFinished"
+      );
     });
 
     it("should set reward duration", async () => {
@@ -177,6 +196,23 @@ describe("Staking Contract", async () => {
       await expect(
         stakingContract.connect(user1).notifyRewardAmount(REWARD_AMOUNT)
       ).to.be.revertedWith(AC_REVERT);
+    });
+
+    it("should trigger RewardAmountGreaterThanBalance error", async () => {
+      await rewardToken.transfer(stakingContractTester.address, REWARD_AMOUNT);
+      await stakingContractTester.setRewardsDuration(1000);
+      await stakingContractTester.transferFromContract(
+        rewardToken.address,
+        deployer.address,
+        REWARD_AMOUNT
+      );
+
+      await expect(
+        stakingContractTester.notifyRewardAmount(REWARD_AMOUNT)
+      ).to.be.revertedWithCustomError(
+        stakingContractTester,
+        "RewardAmountGreaterThanBalance"
+      );
     });
 
     it("should be successful", async () => {
@@ -194,4 +230,8 @@ describe("Staking Contract", async () => {
       expect(await stakingContract.rewardRate()).to.equal(50000000000000000n);
     });
   });
+
+  describe("stake", async () => {});
+
+  describe("withdraw", async () => {});
 });

@@ -55,12 +55,15 @@ export interface StakingContractV2TestInterface extends utils.Interface {
     "rewardRate()": FunctionFragment;
     "rewardToken()": FunctionFragment;
     "rewards(address)": FunctionFragment;
+    "setFinishAt(uint256)": FunctionFragment;
+    "setRewardRate(uint256)": FunctionFragment;
     "setRewardsDuration(uint256)": FunctionFragment;
     "stake(uint256)": FunctionFragment;
     "stakingToken()": FunctionFragment;
     "supportsInterface(bytes4)": FunctionFragment;
     "testFN()": FunctionFragment;
     "totalStaked()": FunctionFragment;
+    "transferFromContract(address,address,uint256)": FunctionFragment;
     "unpause()": FunctionFragment;
     "updatedAt()": FunctionFragment;
     "upgradeTo(address)": FunctionFragment;
@@ -96,12 +99,15 @@ export interface StakingContractV2TestInterface extends utils.Interface {
       | "rewardRate"
       | "rewardToken"
       | "rewards"
+      | "setFinishAt"
+      | "setRewardRate"
       | "setRewardsDuration"
       | "stake"
       | "stakingToken"
       | "supportsInterface"
       | "testFN"
       | "totalStaked"
+      | "transferFromContract"
       | "unpause"
       | "updatedAt"
       | "upgradeTo"
@@ -196,6 +202,14 @@ export interface StakingContractV2TestInterface extends utils.Interface {
     values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
+    functionFragment: "setFinishAt",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setRewardRate",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "setRewardsDuration",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
@@ -215,6 +229,14 @@ export interface StakingContractV2TestInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "totalStaked",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "transferFromContract",
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>
+    ]
   ): string;
   encodeFunctionData(functionFragment: "unpause", values?: undefined): string;
   encodeFunctionData(functionFragment: "updatedAt", values?: undefined): string;
@@ -294,6 +316,14 @@ export interface StakingContractV2TestInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "rewards", data: BytesLike): Result;
   decodeFunctionResult(
+    functionFragment: "setFinishAt",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setRewardRate",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "setRewardsDuration",
     data: BytesLike
   ): Result;
@@ -309,6 +339,10 @@ export interface StakingContractV2TestInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "testFN", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "totalStaked",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "transferFromContract",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "unpause", data: BytesLike): Result;
@@ -579,6 +613,16 @@ export interface StakingContractV2Test extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
+    setFinishAt(
+      _finish: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    setRewardRate(
+      _rate: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     setRewardsDuration(
       _duration: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -599,6 +643,13 @@ export interface StakingContractV2Test extends BaseContract {
     testFN(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     totalStaked(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    transferFromContract(
+      _token: PromiseOrValue<string>,
+      _to: PromiseOrValue<string>,
+      _amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
 
     unpause(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -723,6 +774,16 @@ export interface StakingContractV2Test extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
+  setFinishAt(
+    _finish: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  setRewardRate(
+    _rate: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   setRewardsDuration(
     _duration: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -743,6 +804,13 @@ export interface StakingContractV2Test extends BaseContract {
   testFN(overrides?: CallOverrides): Promise<BigNumber>;
 
   totalStaked(overrides?: CallOverrides): Promise<BigNumber>;
+
+  transferFromContract(
+    _token: PromiseOrValue<string>,
+    _to: PromiseOrValue<string>,
+    _amount: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   unpause(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -863,6 +931,16 @@ export interface StakingContractV2Test extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    setFinishAt(
+      _finish: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setRewardRate(
+      _rate: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     setRewardsDuration(
       _duration: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -883,6 +961,13 @@ export interface StakingContractV2Test extends BaseContract {
     testFN(overrides?: CallOverrides): Promise<BigNumber>;
 
     totalStaked(overrides?: CallOverrides): Promise<BigNumber>;
+
+    transferFromContract(
+      _token: PromiseOrValue<string>,
+      _to: PromiseOrValue<string>,
+      _amount: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     unpause(overrides?: CallOverrides): Promise<void>;
 
@@ -1085,6 +1170,16 @@ export interface StakingContractV2Test extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    setFinishAt(
+      _finish: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    setRewardRate(
+      _rate: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     setRewardsDuration(
       _duration: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -1105,6 +1200,13 @@ export interface StakingContractV2Test extends BaseContract {
     testFN(overrides?: CallOverrides): Promise<BigNumber>;
 
     totalStaked(overrides?: CallOverrides): Promise<BigNumber>;
+
+    transferFromContract(
+      _token: PromiseOrValue<string>,
+      _to: PromiseOrValue<string>,
+      _amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
 
     unpause(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -1236,6 +1338,16 @@ export interface StakingContractV2Test extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    setFinishAt(
+      _finish: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setRewardRate(
+      _rate: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     setRewardsDuration(
       _duration: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -1256,6 +1368,13 @@ export interface StakingContractV2Test extends BaseContract {
     testFN(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     totalStaked(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    transferFromContract(
+      _token: PromiseOrValue<string>,
+      _to: PromiseOrValue<string>,
+      _amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
 
     unpause(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
