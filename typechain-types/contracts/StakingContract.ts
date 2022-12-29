@@ -38,7 +38,6 @@ export interface StakingContractInterface extends utils.Interface {
     "duration()": FunctionFragment;
     "earned(address)": FunctionFragment;
     "finishAt()": FunctionFragment;
-    "getReward()": FunctionFragment;
     "getRoleAdmin(bytes32)": FunctionFragment;
     "grantRole(bytes32,address)": FunctionFragment;
     "hasRole(bytes32,address)": FunctionFragment;
@@ -51,7 +50,7 @@ export interface StakingContractInterface extends utils.Interface {
     "renounceRole(bytes32,address)": FunctionFragment;
     "revokeRole(bytes32,address)": FunctionFragment;
     "rewardPerToken()": FunctionFragment;
-    "rewardPerTokenStored()": FunctionFragment;
+    "rewardPerTokenStaked()": FunctionFragment;
     "rewardRate()": FunctionFragment;
     "rewardToken()": FunctionFragment;
     "rewards(address)": FunctionFragment;
@@ -64,8 +63,9 @@ export interface StakingContractInterface extends utils.Interface {
     "updatedAt()": FunctionFragment;
     "upgradeTo(address)": FunctionFragment;
     "upgradeToAndCall(address,bytes)": FunctionFragment;
-    "userRewardPerTokenPaid(address)": FunctionFragment;
-    "withdraw(uint256)": FunctionFragment;
+    "userRewardPerTokenStaked(address)": FunctionFragment;
+    "withdrawRewards()": FunctionFragment;
+    "withdrawStake(uint256)": FunctionFragment;
   };
 
   getFunction(
@@ -78,7 +78,6 @@ export interface StakingContractInterface extends utils.Interface {
       | "duration"
       | "earned"
       | "finishAt"
-      | "getReward"
       | "getRoleAdmin"
       | "grantRole"
       | "hasRole"
@@ -91,7 +90,7 @@ export interface StakingContractInterface extends utils.Interface {
       | "renounceRole"
       | "revokeRole"
       | "rewardPerToken"
-      | "rewardPerTokenStored"
+      | "rewardPerTokenStaked"
       | "rewardRate"
       | "rewardToken"
       | "rewards"
@@ -104,8 +103,9 @@ export interface StakingContractInterface extends utils.Interface {
       | "updatedAt"
       | "upgradeTo"
       | "upgradeToAndCall"
-      | "userRewardPerTokenPaid"
-      | "withdraw"
+      | "userRewardPerTokenStaked"
+      | "withdrawRewards"
+      | "withdrawStake"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -134,7 +134,6 @@ export interface StakingContractInterface extends utils.Interface {
     values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(functionFragment: "finishAt", values?: undefined): string;
-  encodeFunctionData(functionFragment: "getReward", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "getRoleAdmin",
     values: [PromiseOrValue<BytesLike>]
@@ -178,7 +177,7 @@ export interface StakingContractInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "rewardPerTokenStored",
+    functionFragment: "rewardPerTokenStaked",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -224,11 +223,15 @@ export interface StakingContractInterface extends utils.Interface {
     values: [PromiseOrValue<string>, PromiseOrValue<BytesLike>]
   ): string;
   encodeFunctionData(
-    functionFragment: "userRewardPerTokenPaid",
+    functionFragment: "userRewardPerTokenStaked",
     values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
-    functionFragment: "withdraw",
+    functionFragment: "withdrawRewards",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "withdrawStake",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
 
@@ -249,7 +252,6 @@ export interface StakingContractInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "duration", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "earned", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "finishAt", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "getReward", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getRoleAdmin",
     data: BytesLike
@@ -281,7 +283,7 @@ export interface StakingContractInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "rewardPerTokenStored",
+    functionFragment: "rewardPerTokenStaked",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "rewardRate", data: BytesLike): Result;
@@ -315,10 +317,17 @@ export interface StakingContractInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "userRewardPerTokenPaid",
+    functionFragment: "userRewardPerTokenStaked",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "withdrawRewards",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "withdrawStake",
+    data: BytesLike
+  ): Result;
 
   events: {
     "AdminChanged(address,address)": EventFragment;
@@ -329,10 +338,10 @@ export interface StakingContractInterface extends utils.Interface {
     "RoleAdminChanged(bytes32,bytes32,bytes32)": EventFragment;
     "RoleGranted(bytes32,address,address)": EventFragment;
     "RoleRevoked(bytes32,address,address)": EventFragment;
+    "StakeWithdrawn(address,uint256)": EventFragment;
     "Staked(address,uint256)": EventFragment;
     "Unpaused(address)": EventFragment;
     "Upgraded(address)": EventFragment;
-    "Withdrawn(address,uint256)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "AdminChanged"): EventFragment;
@@ -343,10 +352,10 @@ export interface StakingContractInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "RoleAdminChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RoleGranted"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RoleRevoked"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "StakeWithdrawn"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Staked"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Unpaused"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Upgraded"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Withdrawn"): EventFragment;
 }
 
 export interface AdminChangedEventObject {
@@ -433,6 +442,17 @@ export type RoleRevokedEvent = TypedEvent<
 
 export type RoleRevokedEventFilter = TypedEventFilter<RoleRevokedEvent>;
 
+export interface StakeWithdrawnEventObject {
+  account: string;
+  amount: BigNumber;
+}
+export type StakeWithdrawnEvent = TypedEvent<
+  [string, BigNumber],
+  StakeWithdrawnEventObject
+>;
+
+export type StakeWithdrawnEventFilter = TypedEventFilter<StakeWithdrawnEvent>;
+
 export interface StakedEventObject {
   account: string;
   amount: BigNumber;
@@ -454,17 +474,6 @@ export interface UpgradedEventObject {
 export type UpgradedEvent = TypedEvent<[string], UpgradedEventObject>;
 
 export type UpgradedEventFilter = TypedEventFilter<UpgradedEvent>;
-
-export interface WithdrawnEventObject {
-  account: string;
-  amount: BigNumber;
-}
-export type WithdrawnEvent = TypedEvent<
-  [string, BigNumber],
-  WithdrawnEventObject
->;
-
-export type WithdrawnEventFilter = TypedEventFilter<WithdrawnEvent>;
 
 export interface StakingContract extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -521,10 +530,6 @@ export interface StakingContract extends BaseContract {
 
     finishAt(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    getReward(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
     getRoleAdmin(
       role: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
@@ -577,7 +582,7 @@ export interface StakingContract extends BaseContract {
 
     rewardPerToken(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    rewardPerTokenStored(overrides?: CallOverrides): Promise<[BigNumber]>;
+    rewardPerTokenStaked(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     rewardRate(overrides?: CallOverrides): Promise<[BigNumber]>;
 
@@ -624,12 +629,16 @@ export interface StakingContract extends BaseContract {
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    userRewardPerTokenPaid(
+    userRewardPerTokenStaked(
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
-    withdraw(
+    withdrawRewards(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    withdrawStake(
       _amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
@@ -662,10 +671,6 @@ export interface StakingContract extends BaseContract {
   ): Promise<BigNumber>;
 
   finishAt(overrides?: CallOverrides): Promise<BigNumber>;
-
-  getReward(
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
 
   getRoleAdmin(
     role: PromiseOrValue<BytesLike>,
@@ -719,7 +724,7 @@ export interface StakingContract extends BaseContract {
 
   rewardPerToken(overrides?: CallOverrides): Promise<BigNumber>;
 
-  rewardPerTokenStored(overrides?: CallOverrides): Promise<BigNumber>;
+  rewardPerTokenStaked(overrides?: CallOverrides): Promise<BigNumber>;
 
   rewardRate(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -766,12 +771,16 @@ export interface StakingContract extends BaseContract {
     overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  userRewardPerTokenPaid(
+  userRewardPerTokenStaked(
     arg0: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
-  withdraw(
+  withdrawRewards(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  withdrawStake(
     _amount: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
@@ -804,8 +813,6 @@ export interface StakingContract extends BaseContract {
     ): Promise<BigNumber>;
 
     finishAt(overrides?: CallOverrides): Promise<BigNumber>;
-
-    getReward(overrides?: CallOverrides): Promise<void>;
 
     getRoleAdmin(
       role: PromiseOrValue<BytesLike>,
@@ -857,7 +864,7 @@ export interface StakingContract extends BaseContract {
 
     rewardPerToken(overrides?: CallOverrides): Promise<BigNumber>;
 
-    rewardPerTokenStored(overrides?: CallOverrides): Promise<BigNumber>;
+    rewardPerTokenStaked(overrides?: CallOverrides): Promise<BigNumber>;
 
     rewardRate(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -902,12 +909,14 @@ export interface StakingContract extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    userRewardPerTokenPaid(
+    userRewardPerTokenStaked(
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    withdraw(
+    withdrawRewards(overrides?: CallOverrides): Promise<void>;
+
+    withdrawStake(
       _amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
@@ -978,6 +987,12 @@ export interface StakingContract extends BaseContract {
       sender?: PromiseOrValue<string> | null
     ): RoleRevokedEventFilter;
 
+    "StakeWithdrawn(address,uint256)"(
+      account?: null,
+      amount?: null
+    ): StakeWithdrawnEventFilter;
+    StakeWithdrawn(account?: null, amount?: null): StakeWithdrawnEventFilter;
+
     "Staked(address,uint256)"(account?: null, amount?: null): StakedEventFilter;
     Staked(account?: null, amount?: null): StakedEventFilter;
 
@@ -990,12 +1005,6 @@ export interface StakingContract extends BaseContract {
     Upgraded(
       implementation?: PromiseOrValue<string> | null
     ): UpgradedEventFilter;
-
-    "Withdrawn(address,uint256)"(
-      account?: null,
-      amount?: null
-    ): WithdrawnEventFilter;
-    Withdrawn(account?: null, amount?: null): WithdrawnEventFilter;
   };
 
   estimateGas: {
@@ -1026,10 +1035,6 @@ export interface StakingContract extends BaseContract {
     ): Promise<BigNumber>;
 
     finishAt(overrides?: CallOverrides): Promise<BigNumber>;
-
-    getReward(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
 
     getRoleAdmin(
       role: PromiseOrValue<BytesLike>,
@@ -1083,7 +1088,7 @@ export interface StakingContract extends BaseContract {
 
     rewardPerToken(overrides?: CallOverrides): Promise<BigNumber>;
 
-    rewardPerTokenStored(overrides?: CallOverrides): Promise<BigNumber>;
+    rewardPerTokenStaked(overrides?: CallOverrides): Promise<BigNumber>;
 
     rewardRate(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1130,12 +1135,16 @@ export interface StakingContract extends BaseContract {
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    userRewardPerTokenPaid(
+    userRewardPerTokenStaked(
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    withdraw(
+    withdrawRewards(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    withdrawStake(
       _amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
@@ -1171,10 +1180,6 @@ export interface StakingContract extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     finishAt(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    getReward(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
 
     getRoleAdmin(
       role: PromiseOrValue<BytesLike>,
@@ -1230,7 +1235,7 @@ export interface StakingContract extends BaseContract {
 
     rewardPerToken(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    rewardPerTokenStored(
+    rewardPerTokenStaked(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -1279,12 +1284,16 @@ export interface StakingContract extends BaseContract {
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    userRewardPerTokenPaid(
+    userRewardPerTokenStaked(
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    withdraw(
+    withdrawRewards(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    withdrawStake(
       _amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;

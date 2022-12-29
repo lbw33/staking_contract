@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/lukewickens-pillar/Documents/personal_projects/staking_contract/contracts/StakingContract.sol": {
-      "lastModificationDate": 1672245894367,
-      "contentHash": "fe50cf44697c46b33f4d94c0165e0915",
+      "lastModificationDate": 1672314890853,
+      "contentHash": "1531a8438599400e5d2a1b488ebd9f32",
       "sourceName": "contracts/StakingContract.sol",
       "solcConfig": {
         "version": "0.8.15",

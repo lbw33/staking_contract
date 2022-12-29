@@ -31,42 +31,49 @@ contract StakingContract is
     uint256 public finishAt;
     uint256 public updatedAt;
     uint256 public rewardRate;
-    uint256 public rewardPerTokenStored;
-
-    /***** Modifiers *****/
-    modifier updateReward(address _account) {
-        rewardPerTokenStored = rewardPerToken();
-        updatedAt = lastTimeRewardApplicable();
-
-        if (_account != address(0)) {
-            rewards[_account] = earned(_account);
-            userRewardPerTokenPaid[_account] = rewardPerTokenStored;
-        }
-        _;
-    }
+    uint256 public rewardPerTokenStaked;
 
     /***** Mappings *****/
 
     mapping(address => uint256) public balanceOf;
-    mapping(address => uint256) public userRewardPerTokenPaid;
+    mapping(address => uint256) public userRewardPerTokenStaked;
     mapping(address => uint256) public rewards;
 
     /***** Events *****/
     event Staked(address account, uint256 amount);
-    event Withdrawn(address account, uint256 amount);
+    event StakeWithdrawn(address account, uint256 amount);
     event RewardsWithdrawn(address account, uint256 amount);
 
     /***** Custom Errors *****/
 
+    error StakingTokenCannotBeZeroAddress();
+    error RewardTokenCannotBeZeroAddress();
     error RewardDurationNotFinished();
     error RewardRateCannotBeZero();
     error RewardAmountGreaterThanBalance();
     error AmountCannotBeZero();
+    error NoRewardsToClaim();
+
+    /***** Modifiers *****/
+    modifier updateReward(address _account) {
+        rewardPerTokenStaked = rewardPerToken();
+        updatedAt = lastTimeRewardApplicable();
+
+        if (_account != address(0)) {
+            rewards[_account] = earned(_account);
+            userRewardPerTokenStaked[_account] = rewardPerTokenStaked;
+        }
+        _;
+    }
 
     function initialize(address _stakingToken, address _rewardToken)
         public
         initializer
     {
+        if (_stakingToken == address(0))
+            revert StakingTokenCannotBeZeroAddress();
+        if (_rewardToken == address(0)) revert RewardTokenCannotBeZeroAddress();
+
         __AccessControl_init();
         __ReentrancyGuard_init();
         __Pausable_init();
@@ -151,10 +158,10 @@ contract StakingContract is
         emit Staked(msg.sender, _amount);
     }
 
-    /// @notice Allows users to withdraw rewards
+    /// @notice Allows users to withdraw stake
     /// @dev Allowed when not paused
-    /// @param _amount amount of rewards to withdraw
-    function withdraw(uint256 _amount)
+    /// @param _amount amount of user stake to withdraw
+    function withdrawStake(uint256 _amount)
         external
         whenNotPaused
         nonReentrant
@@ -164,7 +171,18 @@ contract StakingContract is
         balanceOf[msg.sender] -= _amount;
         totalStaked -= _amount;
         stakingToken.safeTransfer(msg.sender, _amount);
-        emit Withdrawn(msg.sender, _amount);
+        emit StakeWithdrawn(msg.sender, _amount);
+    }
+
+    function withdrawRewards() external updateReward(msg.sender) {
+        uint256 reward = rewards[msg.sender];
+
+        if (reward <= 0) revert NoRewardsToClaim();
+
+        rewards[msg.sender] = 0;
+        rewardToken.safeTransfer(msg.sender, reward);
+
+        emit RewardsWithdrawn(msg.sender, reward);
     }
 
     function lastTimeRewardApplicable() public view returns (uint256) {
@@ -173,36 +191,29 @@ contract StakingContract is
 
     function rewardPerToken() public view returns (uint256) {
         if (totalStaked == 0) {
-            return rewardPerTokenStored;
+            return rewardPerTokenStaked;
         }
         return
-            rewardPerTokenStored +
+            rewardPerTokenStaked +
             (rewardRate * (lastTimeRewardApplicable() - updatedAt) * 1e18) /
             totalStaked;
     }
 
     function earned(address _account) public view returns (uint256) {
         return
-            ((balanceOf[_account] *
-                ((rewardPerToken() - userRewardPerTokenPaid[_account]))) /
-                1e18) + rewards[_account];
-    }
-
-    function getReward() external updateReward(msg.sender) {
-        uint256 reward = rewards[msg.sender];
-
-        if (reward > 0) {
-            rewards[msg.sender] = 0;
-            rewardToken.safeTransfer(msg.sender, reward);
-        }
-
-        emit RewardsWithdrawn(msg.sender, reward);
+            (balanceOf[_account] *
+                (rewardPerToken() - userRewardPerTokenStaked[_account])) /
+            1e18 +
+            rewards[_account];
     }
 
     function changeStakingToken(address _stakingToken)
         external
         onlyRole(ADMIN_ROLE)
     {
+        if (_stakingToken == address(0))
+            revert StakingTokenCannotBeZeroAddress();
+
         stakingToken = IERC20Upgradeable(_stakingToken);
     }
 
@@ -210,6 +221,7 @@ contract StakingContract is
         external
         onlyRole(ADMIN_ROLE)
     {
+        if (_rewardToken == address(0)) revert RewardTokenCannotBeZeroAddress();
         rewardToken = IERC20Upgradeable(_rewardToken);
     }
 

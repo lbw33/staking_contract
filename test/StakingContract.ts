@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { BigNumber, Contract } from "ethers";
 import { ethers, upgrades } from "hardhat";
-import { time } from "@nomicfoundation/hardhat-network-helpers";
+import { time, mine } from "@nomicfoundation/hardhat-network-helpers";
 import type { SignerWithAddress } from "@nomiclabs/hardhat-ethers/dist/src/signer-with-address";
 import {
   StakingContractV2Test__factory,
@@ -10,6 +10,7 @@ import {
   TestToken__factory,
 } from "../typechain-types";
 import { beforeEach } from "mocha";
+import { equal } from "assert";
 
 context("Staking Contract", async () => {
   let deployer: SignerWithAddress;
@@ -48,7 +49,7 @@ context("Staking Contract", async () => {
       rewardToken.address,
     ]);
 
-    // Transfer 100 STK tokens to user1
+    // transfer 100 STK tokens to user1
     await stakeToken.approve(deployer.address, TRANSFER_AMOUNT);
     await stakeToken.transferFrom(
       deployer.address,
@@ -56,10 +57,10 @@ context("Staking Contract", async () => {
       TRANSFER_AMOUNT
     );
 
-    // Sanity check
-    expect(await stakeToken.balanceOf(user1.address)).to.equal(TRANSFER_AMOUNT);
+    // sanity check
+    expect(await stakeToken.balanceOf(user1.address)).eq(TRANSFER_AMOUNT);
 
-    // Approval for user1 => StakingContract
+    // approval for user1 => StakingContract
     await stakeToken
       .connect(user1)
       .approve(stakingContract.address, TRANSFER_AMOUNT);
@@ -82,8 +83,8 @@ context("Staking Contract", async () => {
 
       let stakingToken = await instance.stakingToken();
       let rewardsToken = await instance.rewardToken();
-      expect(stakingToken).to.equal(stakeToken.address);
-      expect(rewardsToken).to.equal(rewardToken.address);
+      expect(stakingToken).eq(stakeToken.address);
+      expect(rewardsToken).eq(rewardToken.address);
 
       const upgraded = await upgrades.upgradeProxy(
         instance.address,
@@ -98,9 +99,9 @@ context("Staking Contract", async () => {
 
       stakingToken = await upgraded.stakingToken();
       rewardsToken = await upgraded.rewardToken();
-      expect(stakingToken).to.equal(stakeToken.address);
-      expect(rewardsToken).to.equal(rewardTokenV2.address);
-      expect(await upgraded.testFN()).to.equal(13);
+      expect(stakingToken).eq(stakeToken.address);
+      expect(rewardsToken).eq(rewardTokenV2.address);
+      expect(await upgraded.testFN()).eq(13);
     });
   });
 
@@ -157,12 +158,10 @@ context("Staking Contract", async () => {
       await expect(await stakingContract.connect(user1).stake(stakeAmount))
         .to.emit(stakingContract, "Staked")
         .withArgs(user1.address, stakeAmount);
-      expect(await stakeToken.balanceOf(user1.address)).to.equal(
+      expect(await stakeToken.balanceOf(user1.address)).eq(
         ethers.utils.parseEther("99")
       );
-      expect(await stakingContract.balanceOf(user1.address)).to.equal(
-        stakeAmount
-      );
+      expect(await stakingContract.balanceOf(user1.address)).eq(stakeAmount);
     });
   });
 
@@ -174,11 +173,12 @@ context("Staking Contract", async () => {
     });
 
     it("should revert if current time < finishedAt", async () => {
-      const sevenDays = 7 * 24 * 60 * 60;
       const blockNum = await ethers.provider.getBlockNumber();
       const block = await ethers.provider.getBlock(blockNum);
       const timestamp = block.timestamp;
-      await stakingContractTester.setFinishAt(timestamp + sevenDays);
+      await stakingContractTester.setFinishAt(
+        timestamp + (await time.duration.days(7))
+      );
       await expect(
         stakingContractTester.setRewardsDuration(1000)
       ).to.be.revertedWithCustomError(
@@ -189,7 +189,7 @@ context("Staking Contract", async () => {
 
     it("should set reward duration", async () => {
       await stakingContract.setRewardsDuration(1000);
-      expect(await stakingContract.duration()).to.equal(1000);
+      expect(await stakingContract.duration()).eq(1000);
     });
   });
 
@@ -219,21 +219,27 @@ context("Staking Contract", async () => {
 
     it("should be successful", async () => {
       await rewardToken.transfer(stakingContract.address, REWARD_AMOUNT);
-      expect(await rewardToken.balanceOf(stakingContract.address)).to.equal(
+      expect(await rewardToken.balanceOf(stakingContract.address)).eq(
         REWARD_AMOUNT
       );
       await stakingContract.setRewardsDuration(REWARD_DURATION);
       await stakingContract.notifyRewardAmount(REWARD_AMOUNT);
-      expect(await stakingContract.finishAt()).to.equal(
+      expect(await stakingContract.finishAt()).eq(
         (await time.latest()) + REWARD_DURATION
       );
-      expect(await stakingContract.updatedAt()).to.equal(await time.latest());
+      expect(await stakingContract.updatedAt()).eq(await time.latest());
       // 50000000000000000n = REWARD_AMOUNT / REWARD_DURATION
-      expect(await stakingContract.rewardRate()).to.equal(50000000000000000n);
+      expect(await stakingContract.rewardRate()).eq(50000000000000000n);
     });
   });
 
   describe("stake", async () => {
+    beforeEach(async () => {
+      await rewardToken.transfer(stakingContract.address, REWARD_AMOUNT);
+      await stakingContract.setRewardsDuration(REWARD_DURATION);
+      await stakingContract.notifyRewardAmount(REWARD_AMOUNT);
+    });
+
     it("should revert with AmountCannotBeZero if stake amount is zero", async () => {
       await expect(
         stakingContract.connect(user1).stake(0)
@@ -241,39 +247,33 @@ context("Staking Contract", async () => {
     });
 
     it("should update user1 balance and state vars on successful stake", async () => {
+      // record balances before stake
       const user1PreBal = await stakeToken.balanceOf(user1.address);
       const stakingContractPreBal = await stakeToken.balanceOf(
         stakingContract.address
       );
-
+      // stake
       await stakingContract.connect(user1).stake(STAKE_AMOUNT);
-
+      // record balances after stake
       const user1PostBal = await stakeToken.balanceOf(user1.address);
       const stakingContractPostBal = await stakeToken.balanceOf(
         stakingContract.address
       );
-
-      expect(parseInt(user1PostBal.toString())).to.equal(
+      expect(parseInt(user1PostBal.toString())).eq(
         parseInt(user1PreBal.toString()) - parseInt(STAKE_AMOUNT.toString())
       );
-      expect(parseInt(stakingContractPostBal.toString())).to.equal(
+      expect(parseInt(stakingContractPostBal.toString())).eq(
         parseInt(stakingContractPreBal.toString()) +
           parseInt(STAKE_AMOUNT.toString())
       );
-      expect(await stakingContract.totalStaked()).to.equal(STAKE_AMOUNT);
-      expect(await stakingContract.balanceOf(user1.address)).to.equal(
-        STAKE_AMOUNT
-      );
-      // TODO: test for updateReward modifier
-      expect(await stakingContract.rewardPerTokenStored()).gt(
-        BigNumber.from(0)
-      );
+      expect(await stakingContract.totalStaked()).eq(STAKE_AMOUNT);
+      expect(await stakingContract.balanceOf(user1.address)).eq(STAKE_AMOUNT);
       const updatedAt = await stakingContract.updatedAt();
-      expect(parseInt(updatedAt.toString())).to.equal(await time.latest());
-      expect(
-        await stakingContract.userRewardPerTokenPaid(user1.address)
-      ).to.equal(await stakingContract.rewardPerTokenStored());
-      expect(await stakingContract.rewards(user1.address)).to.equal(
+      expect(parseInt(updatedAt.toString())).eq(await time.latest());
+      expect(await stakingContract.userRewardPerTokenStaked(user1.address)).eq(
+        await stakingContract.rewardPerTokenStaked()
+      );
+      expect(await stakingContract.rewards(user1.address)).eq(
         await stakingContract.earned(user1.address)
       );
     });
@@ -285,7 +285,7 @@ context("Staking Contract", async () => {
     });
   });
 
-  describe("withdraw", async () => {
+  describe("withdrawStake", async () => {
     beforeEach(async () => {
       await rewardToken.transfer(stakingContract.address, REWARD_AMOUNT);
       await stakingContract.setRewardsDuration(REWARD_DURATION);
@@ -295,48 +295,170 @@ context("Staking Contract", async () => {
 
     it("should revert with AmountCannotBeZero if withdraw amount is zero", async () => {
       await expect(
-        stakingContract.connect(user1).withdraw(0)
+        stakingContract.connect(user1).withdrawStake(0)
       ).to.be.revertedWithCustomError(stakingContract, "AmountCannotBeZero");
     });
 
     it("should update user1 balance and state vars on successful withdrawal", async () => {
+      // record balances before stake withdrawal
       const user1PreBal = await stakeToken.balanceOf(user1.address);
       const stakingContractPreBal = await stakeToken.balanceOf(
         stakingContract.address
       );
-
-      await stakingContract.connect(user1).withdraw(STAKE_AMOUNT);
-
+      // withdraw stake
+      await stakingContract.connect(user1).withdrawStake(STAKE_AMOUNT);
+      // record balances after stake withdrawal
       const user1PostBal = await stakeToken.balanceOf(user1.address);
       const stakingContractPostBal = await stakeToken.balanceOf(
         stakingContract.address
       );
-
-      expect(parseInt(user1PreBal.toString())).to.equal(
+      expect(parseInt(user1PreBal.toString())).eq(
         parseInt(user1PostBal.toString()) - parseInt(STAKE_AMOUNT.toString())
       );
-      expect(parseInt(stakingContractPostBal.toString())).to.equal(
+      expect(parseInt(stakingContractPostBal.toString())).eq(
         parseInt(stakingContractPreBal.toString()) -
           parseInt(STAKE_AMOUNT.toString())
       );
-      expect(await stakingContract.totalStaked()).to.equal(0);
-      expect(await stakingContract.balanceOf(user1.address)).to.equal(0);
+      expect(await stakingContract.totalStaked()).eq(0);
+      expect(await stakingContract.balanceOf(user1.address)).eq(0);
       // TODO: test for updateReward modifier
-      expect(await stakingContract.rewardPerTokenStored()).gt(0);
+      expect(await stakingContract.rewardPerTokenStaked()).gt(0);
       const updatedAt = await stakingContract.updatedAt();
-      expect(parseInt(updatedAt.toString())).to.equal(await time.latest());
-      expect(
-        await stakingContract.userRewardPerTokenPaid(user1.address)
-      ).to.equal(await stakingContract.rewardPerTokenStored());
-      expect(await stakingContract.rewards(user1.address)).to.equal(
+      expect(parseInt(updatedAt.toString())).eq(await time.latest());
+      expect(await stakingContract.userRewardPerTokenStaked(user1.address)).eq(
+        await stakingContract.rewardPerTokenStaked()
+      );
+      expect(await stakingContract.rewards(user1.address)).eq(
         await stakingContract.earned(user1.address)
       );
     });
 
-    it("should emit event on successful withdraw", async () => {
-      await expect(stakingContract.connect(user1).withdraw(STAKE_AMOUNT))
-        .to.emit(stakingContract, "Withdrawn")
+    it("should emit event on successful withdrawal of stake", async () => {
+      await expect(stakingContract.connect(user1).withdrawStake(STAKE_AMOUNT))
+        .to.emit(stakingContract, "StakeWithdrawn")
         .withArgs(user1.address, STAKE_AMOUNT);
+    });
+  });
+
+  describe("withdrawRewards", async () => {
+    beforeEach(async () => {
+      await rewardToken.transfer(stakingContract.address, REWARD_AMOUNT);
+      await stakingContract.setRewardsDuration(REWARD_DURATION);
+      await stakingContract.notifyRewardAmount(REWARD_AMOUNT);
+      await stakingContract.connect(user1).stake(STAKE_AMOUNT);
+    });
+
+    it("should revert with NoRewardsToClaim if user rewards earned is zero", async () => {
+      await expect(
+        stakingContract.connect(user2).withdrawRewards()
+      ).to.be.revertedWithCustomError(stakingContract, "NoRewardsToClaim");
+    });
+
+    it("should allow a user to withdraw their accrued rewards", async () => {
+      // increase time to accrue rewards
+      await time.increase(60);
+      // record balances before withdrawal
+      const user1PreBal = await rewardToken.balanceOf(user1.address);
+      const stakingContractPreBal = await rewardToken.balanceOf(
+        stakingContract.address
+      );
+      // withdraw rewards
+      await stakingContract.connect(user1).withdrawRewards();
+      // record balances after withdrawal
+      const user1PostBal = await rewardToken.balanceOf(user1.address);
+      const stakingContractPostBal = await rewardToken.balanceOf(
+        stakingContract.address
+      );
+      expect(user1PostBal).gt(user1PreBal);
+      expect(stakingContractPostBal).lt(stakingContractPreBal);
+      expect(await stakingContract.rewards(user1.address)).eq(0);
+    });
+
+    it("should emit RewardsWithdrawn event on successful withdrawal of rewards", async () => {
+      // increase time to accrue rewards
+      await time.increase(60);
+      // calculate rewards for user + 1 sec reward accrued for time movement
+      const secRwds = await stakingContract.rewardRate();
+      const rwds = secRwds * 61;
+      await expect(stakingContract.connect(user1).withdrawRewards())
+        .to.emit(stakingContract, "RewardsWithdrawn")
+        .withArgs(user1.address, rwds.toString());
+    });
+  });
+
+  describe("rewardPerToken", async () => {
+    it("should return zero when totalStaked is zero", async () => {
+      expect(await stakingContract.rewardPerToken()).eq(0);
+    });
+
+    it("should return number gt zero if totalStaked is gt zero", async () => {
+      await rewardToken.transfer(stakingContract.address, REWARD_AMOUNT);
+      await stakingContract.setRewardsDuration(REWARD_DURATION);
+      await stakingContract.notifyRewardAmount(REWARD_AMOUNT);
+      await stakingContract.connect(user1).stake(STAKE_AMOUNT);
+      // mine block for stake tx to be processed
+      await mine(1);
+      expect(await stakingContract.rewardPerToken()).gt(0);
+    });
+  });
+
+  describe("changeStakingToken", async () => {
+    it("should revert if caller is not `ADMIN_ROLE`", async () => {
+      await expect(
+        stakingContract
+          .connect(user1)
+          .changeStakingToken(ethers.constants.AddressZero)
+      ).to.be.revertedWith(AC_REVERT);
+    });
+
+    it("should revert with error StakingTokenCannotBeZeroAddress if address(0)", async () => {
+      await expect(
+        stakingContract.changeStakingToken(ethers.constants.AddressZero)
+      ).to.be.revertedWithCustomError(
+        stakingContract,
+        "StakingTokenCannotBeZeroAddress"
+      );
+    });
+
+    it("should update staking token address", async () => {
+      const newStkTkn = ethers.utils.getAddress(
+        ethers.utils.hexlify(ethers.utils.randomBytes(20))
+      );
+      const preStkTkn = await stakingContract.stakingToken();
+      await stakingContract.changeStakingToken(newStkTkn);
+      const postStkTkn = await stakingContract.stakingToken();
+      expect(preStkTkn).not.eq(postStkTkn);
+      expect(postStkTkn).eq(newStkTkn);
+    });
+  });
+
+  describe("changeRewardToken", async () => {
+    it("should revert if caller is not `ADMIN_ROLE`", async () => {
+      await expect(
+        stakingContract
+          .connect(user1)
+          .changeRewardToken(ethers.constants.AddressZero)
+      ).to.be.revertedWith(AC_REVERT);
+    });
+
+    it("should revert with error RewardTokenCannotBeZeroAddress if address(0)", async () => {
+      await expect(
+        stakingContract.changeRewardToken(ethers.constants.AddressZero)
+      ).to.be.revertedWithCustomError(
+        stakingContract,
+        "RewardTokenCannotBeZeroAddress"
+      );
+    });
+
+    it("should update staking token address", async () => {
+      const newRwdTkn = ethers.utils.getAddress(
+        ethers.utils.hexlify(ethers.utils.randomBytes(20))
+      );
+      const preRwdTkn = await stakingContract.stakingToken();
+      await stakingContract.changeStakingToken(newRwdTkn);
+      const postRwdTkn = await stakingContract.stakingToken();
+      expect(preRwdTkn).not.eq(postRwdTkn);
+      expect(postRwdTkn).eq(newRwdTkn);
     });
   });
 });
