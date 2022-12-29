@@ -19,6 +19,8 @@ cp .env.local.example .env.local
 Then, open `.env.local` and add the missing environment variables:
 
 - `ETHERSCAN_API_KEY` - Etherscan API key (get it from [etherscan.io](https://etherscan.io/))
+- `ALCHEMY_API_KEY` - Alchemy API key (get it from [alchemy.com](https://www.alchemy.com/))
+- `GOERLI_PRIVATE_KEY` - Private key of goerli deployer
 
 
 ### Deploy
