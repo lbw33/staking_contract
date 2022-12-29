@@ -1,5 +1,9 @@
+import * as dotenv from "dotenv";
 import "@nomicfoundation/hardhat-toolbox";
 import "@openzeppelin/hardhat-upgrades";
+import "@nomiclabs/hardhat-etherscan";
+
+dotenv.config();
 
 module.exports = {
   defaultNetwork: "hardhat",
@@ -23,5 +27,8 @@ module.exports = {
   },
   mocha: {
     timeout: 40000,
+  },
+  etherscan: {
+    apiKey: process.env.ETHERSCAN_API_KEY,
   },
 };
