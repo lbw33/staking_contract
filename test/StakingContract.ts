@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { BigNumber, Contract } from "ethers";
+import { Contract } from "ethers";
 import { ethers, upgrades } from "hardhat";
 import { time, mine } from "@nomicfoundation/hardhat-network-helpers";
 import type { SignerWithAddress } from "@nomiclabs/hardhat-ethers/dist/src/signer-with-address";
@@ -9,8 +9,6 @@ import {
   TestToken,
   TestToken__factory,
 } from "../typechain-types";
-import { beforeEach } from "mocha";
-import { equal } from "assert";
 
 context("Staking Contract", async () => {
   let deployer: SignerWithAddress;

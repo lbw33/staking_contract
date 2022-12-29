@@ -44,5 +44,7 @@ export type { StakingContractV2Test } from "./contracts/helpers/StakingContractV
 export { StakingContractV2Test__factory } from "./factories/contracts/helpers/StakingContractV2Test__factory";
 export type { TestToken } from "./contracts/helpers/TestToken";
 export { TestToken__factory } from "./factories/contracts/helpers/TestToken__factory";
+export type { IStakingContract } from "./contracts/interfaces/IStakingContract";
+export { IStakingContract__factory } from "./factories/contracts/interfaces/IStakingContract__factory";
 export type { StakingContract } from "./contracts/StakingContract";
 export { StakingContract__factory } from "./factories/contracts/StakingContract__factory";

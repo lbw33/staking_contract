@@ -2,4 +2,5 @@
 /* tslint:disable */
 /* eslint-disable */
 export * as helpers from "./helpers";
+export * as interfaces from "./interfaces";
 export { StakingContract__factory } from "./StakingContract__factory";

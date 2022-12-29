@@ -7,9 +7,10 @@ import "@openzeppelin/contracts-upgradeable/token/ERC20/utils/SafeERC20Upgradeab
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
-import "hardhat/console.sol";
+import "./interfaces/IStakingContract.sol";
 
 contract StakingContract is
+    IStakingContract,
     Initializable,
     UUPSUpgradeable,
     PausableUpgradeable,

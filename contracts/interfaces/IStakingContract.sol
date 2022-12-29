@@ -4,13 +4,6 @@
 pragma solidity ^0.8.15;
 
 interface IStakingContract {
-    /***** Events *****/
-    event Staked(address account, uint256 amount);
-    event StakeWithdrawn(address account, uint256 amount);
-    event RewardsWithdrawn(address account, uint256 amount);
-
-    /***** Functions *****/
-
     function setRewardsDuration(uint256 _duration) external;
 
     function notifyRewardAmount(uint256 _amount) external;

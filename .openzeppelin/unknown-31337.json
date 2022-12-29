@@ -308,47 +308,47 @@
     },
     {
       "address": "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
-      "txHash": "0xa1ee57dbd26b27fb15ecbe01c125e94538126e15ec8ed0c21cc17904716748b0",
+      "txHash": "0x41e82fa7c2dd00f867006b1480cb4d09f32adf401740631c980a3ed5ddfbe822",
       "kind": "uups"
     },
     {
       "address": "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
-      "txHash": "0x92dec40875ec70f388e716dcc59adf6cc3892fda0decc9531d27be1bdda251a1",
+      "txHash": "0x310700942fc78c9583c52794c415d16b6c9e7f66e063cc548847862cd4c529b9",
       "kind": "uups"
     },
     {
       "address": "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
-      "txHash": "0x55b189f77471acd179f3c1ff6786c3ca9d4ed9e1e9b160d8565b33ce1ac4ac48",
+      "txHash": "0xa8bed561e428c5ea4db8020864a538364d23ec6cc351454a13db45c2f2c2119e",
       "kind": "uups"
     },
     {
       "address": "0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82",
-      "txHash": "0xa9324077c0524a0d6419979df32c99a9239f94eea2a01d7f2927f7df358d8170",
+      "txHash": "0x70d3c7e99049220c9e9f247941100d5f89567427c08f4151f8b050867608e00e",
       "kind": "uups"
     },
     {
       "address": "0x9A676e781A523b5d0C0e43731313A708CB607508",
-      "txHash": "0x5488d5bac3a498d47662677288625d3193c9f73134f5e30724af8d962ea54827",
+      "txHash": "0xc01274f22494d8c6360c06614ae9fc64919e017e37b6518dc21ef6312d269ef8",
       "kind": "uups"
     },
     {
       "address": "0x3Aa5ebB10DC797CAC828524e59A333d0A371443c",
-      "txHash": "0x3b0f6fde1856e2ccbc6966a34b3b8684be251a337ff1dd970017595ea83c1128",
+      "txHash": "0x11ec3ffd9f649358d793eccbf49fe3a4d4b0d50202a9bb42267f51ef7698df29",
       "kind": "uups"
     },
     {
       "address": "0xc6e7DF5E7b4f2A278906862b61205850344D4e7d",
-      "txHash": "0xbf1836dd15f55fd8081e3270a456e0d1d4842f8fdf254aa203029b16515796ef",
+      "txHash": "0x43c9f7ad9372fbbd0114c1dc06ef773250bc0a1c8a1be25739c95595d7f53947",
       "kind": "uups"
     },
     {
       "address": "0x09635F643e140090A9A8Dcd712eD6285858ceBef",
-      "txHash": "0x7cff03b1eef1d1f73c606f077cdf3a92f4f73b29d9c23d6cf55b38d4d29cc731",
+      "txHash": "0x88d062816104512c0c1e45f4c1571e56c90d4533d10fd82a2db6b0d3df20f3ad",
       "kind": "uups"
     },
     {
       "address": "0xc5a5C42992dECbae36851359345FE25997F5C42d",
-      "txHash": "0x887e68f836b1530e532a0324dc85343c4b40a0668ed7e7759d61199921885c89",
+      "txHash": "0x311d0046ba414b905c804dff74858eb10f1b04ac4ca4c5b18b9d4d6e98972b48",
       "kind": "uups"
     },
     {
@@ -863,7 +863,7 @@
     },
     "42fb63ba428d782788d22059f997104a968f47b542f9b992b40c9aca4ac7dba4": {
       "address": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
-      "txHash": "0x122bfda630792d5f9e4ac4c009e7a955d58be08d3dab3b42ce46f1c891866a76",
+      "txHash": "0xdb133db3dea080a1261f23cc6067c258fa05f9a6171774db8f5f1554f06f327e",
       "layout": {
         "solcVersion": "0.8.15",
         "storage": [
@@ -970,7 +970,7 @@
             "slot": "351",
             "type": "t_contract(IERC20Upgradeable)1380",
             "contract": "StakingContract",
-            "src": "contracts/StakingContract.sol:21"
+            "src": "contracts/StakingContract.sol:22"
           },
           {
             "label": "rewardToken",
@@ -978,7 +978,7 @@
             "slot": "352",
             "type": "t_contract(IERC20Upgradeable)1380",
             "contract": "StakingContract",
-            "src": "contracts/StakingContract.sol:22"
+            "src": "contracts/StakingContract.sol:23"
           },
           {
             "label": "totalStaked",
@@ -986,7 +986,7 @@
             "slot": "353",
             "type": "t_uint256",
             "contract": "StakingContract",
-            "src": "contracts/StakingContract.sol:29"
+            "src": "contracts/StakingContract.sol:30"
           },
           {
             "label": "duration",
@@ -994,7 +994,7 @@
             "slot": "354",
             "type": "t_uint256",
             "contract": "StakingContract",
-            "src": "contracts/StakingContract.sol:30"
+            "src": "contracts/StakingContract.sol:31"
           },
           {
             "label": "finishAt",
@@ -1002,7 +1002,7 @@
             "slot": "355",
             "type": "t_uint256",
             "contract": "StakingContract",
-            "src": "contracts/StakingContract.sol:31"
+            "src": "contracts/StakingContract.sol:32"
           },
           {
             "label": "updatedAt",
@@ -1010,7 +1010,7 @@
             "slot": "356",
             "type": "t_uint256",
             "contract": "StakingContract",
-            "src": "contracts/StakingContract.sol:32"
+            "src": "contracts/StakingContract.sol:33"
           },
           {
             "label": "rewardRate",
@@ -1018,7 +1018,7 @@
             "slot": "357",
             "type": "t_uint256",
             "contract": "StakingContract",
-            "src": "contracts/StakingContract.sol:33"
+            "src": "contracts/StakingContract.sol:34"
           },
           {
             "label": "rewardPerTokenStaked",
@@ -1026,7 +1026,7 @@
             "slot": "358",
             "type": "t_uint256",
             "contract": "StakingContract",
-            "src": "contracts/StakingContract.sol:34"
+            "src": "contracts/StakingContract.sol:35"
           },
           {
             "label": "balanceOf",
@@ -1034,7 +1034,7 @@
             "slot": "359",
             "type": "t_mapping(t_address,t_uint256)",
             "contract": "StakingContract",
-            "src": "contracts/StakingContract.sol:38"
+            "src": "contracts/StakingContract.sol:39"
           },
           {
             "label": "userRewardPerTokenStaked",
@@ -1042,7 +1042,7 @@
             "slot": "360",
             "type": "t_mapping(t_address,t_uint256)",
             "contract": "StakingContract",
-            "src": "contracts/StakingContract.sol:39"
+            "src": "contracts/StakingContract.sol:40"
           },
           {
             "label": "rewards",
@@ -1050,7 +1050,7 @@
             "slot": "361",
             "type": "t_mapping(t_address,t_uint256)",
             "contract": "StakingContract",
-            "src": "contracts/StakingContract.sol:40"
+            "src": "contracts/StakingContract.sol:41"
           }
         ],
         "types": {
@@ -1121,7 +1121,7 @@
     },
     "ddf3b898de657d58d0b786a061dfff053b5adf1cf057d0aa904e6cedb2042fac": {
       "address": "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
-      "txHash": "0xeddf852727bd9237ef5e986684917fcb4467e2060029a82733b2d04dfef841a4",
+      "txHash": "0xe8fd509639b64bdd99f73c0e0c5dab40eff7d2c2a298e8ea71c76eeaef8ca7e8",
       "layout": {
         "solcVersion": "0.8.15",
         "storage": [
@@ -1228,7 +1228,7 @@
             "slot": "351",
             "type": "t_contract(IERC20Upgradeable)1380",
             "contract": "StakingContract",
-            "src": "contracts/StakingContract.sol:21"
+            "src": "contracts/StakingContract.sol:22"
           },
           {
             "label": "rewardToken",
@@ -1236,7 +1236,7 @@
             "slot": "352",
             "type": "t_contract(IERC20Upgradeable)1380",
             "contract": "StakingContract",
-            "src": "contracts/StakingContract.sol:22"
+            "src": "contracts/StakingContract.sol:23"
           },
           {
             "label": "totalStaked",
@@ -1244,7 +1244,7 @@
             "slot": "353",
             "type": "t_uint256",
             "contract": "StakingContract",
-            "src": "contracts/StakingContract.sol:29"
+            "src": "contracts/StakingContract.sol:30"
           },
           {
             "label": "duration",
@@ -1252,7 +1252,7 @@
             "slot": "354",
             "type": "t_uint256",
             "contract": "StakingContract",
-            "src": "contracts/StakingContract.sol:30"
+            "src": "contracts/StakingContract.sol:31"
           },
           {
             "label": "finishAt",
@@ -1260,7 +1260,7 @@
             "slot": "355",
             "type": "t_uint256",
             "contract": "StakingContract",
-            "src": "contracts/StakingContract.sol:31"
+            "src": "contracts/StakingContract.sol:32"
           },
           {
             "label": "updatedAt",
@@ -1268,7 +1268,7 @@
             "slot": "356",
             "type": "t_uint256",
             "contract": "StakingContract",
-            "src": "contracts/StakingContract.sol:32"
+            "src": "contracts/StakingContract.sol:33"
           },
           {
             "label": "rewardRate",
@@ -1276,7 +1276,7 @@
             "slot": "357",
             "type": "t_uint256",
             "contract": "StakingContract",
-            "src": "contracts/StakingContract.sol:33"
+            "src": "contracts/StakingContract.sol:34"
           },
           {
             "label": "rewardPerTokenStaked",
@@ -1284,7 +1284,7 @@
             "slot": "358",
             "type": "t_uint256",
             "contract": "StakingContract",
-            "src": "contracts/StakingContract.sol:34"
+            "src": "contracts/StakingContract.sol:35"
           },
           {
             "label": "balanceOf",
@@ -1292,7 +1292,7 @@
             "slot": "359",
             "type": "t_mapping(t_address,t_uint256)",
             "contract": "StakingContract",
-            "src": "contracts/StakingContract.sol:38"
+            "src": "contracts/StakingContract.sol:39"
           },
           {
             "label": "userRewardPerTokenStaked",
@@ -1300,7 +1300,7 @@
             "slot": "360",
             "type": "t_mapping(t_address,t_uint256)",
             "contract": "StakingContract",
-            "src": "contracts/StakingContract.sol:39"
+            "src": "contracts/StakingContract.sol:40"
           },
           {
             "label": "rewards",
@@ -1308,7 +1308,7 @@
             "slot": "361",
             "type": "t_mapping(t_address,t_uint256)",
             "contract": "StakingContract",
-            "src": "contracts/StakingContract.sol:40"
+            "src": "contracts/StakingContract.sol:41"
           }
         ],
         "types": {
