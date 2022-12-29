@@ -2,6 +2,7 @@ import * as dotenv from "dotenv";
 import "@nomicfoundation/hardhat-toolbox";
 import "@openzeppelin/hardhat-upgrades";
 import "@nomiclabs/hardhat-etherscan";
+import "solidity-docgen";
 
 dotenv.config();
 
@@ -30,5 +31,8 @@ module.exports = {
   },
   etherscan: {
     apiKey: process.env.ETHERSCAN_API_KEY,
+  },
+  docgen: {
+    exclude: ["/helpers", "/interfaces"],
   },
 };
