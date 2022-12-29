@@ -37,6 +37,7 @@ export interface StakingContractInterface extends utils.Interface {
     "changeStakingToken(address)": FunctionFragment;
     "duration()": FunctionFragment;
     "earned(address)": FunctionFragment;
+    "exit()": FunctionFragment;
     "finishAt()": FunctionFragment;
     "getRoleAdmin(bytes32)": FunctionFragment;
     "grantRole(bytes32,address)": FunctionFragment;
@@ -77,6 +78,7 @@ export interface StakingContractInterface extends utils.Interface {
       | "changeStakingToken"
       | "duration"
       | "earned"
+      | "exit"
       | "finishAt"
       | "getRoleAdmin"
       | "grantRole"
@@ -133,6 +135,7 @@ export interface StakingContractInterface extends utils.Interface {
     functionFragment: "earned",
     values: [PromiseOrValue<string>]
   ): string;
+  encodeFunctionData(functionFragment: "exit", values?: undefined): string;
   encodeFunctionData(functionFragment: "finishAt", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "getRoleAdmin",
@@ -251,6 +254,7 @@ export interface StakingContractInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "duration", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "earned", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "exit", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "finishAt", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getRoleAdmin",
@@ -334,6 +338,7 @@ export interface StakingContractInterface extends utils.Interface {
     "BeaconUpgraded(address)": EventFragment;
     "Initialized(uint8)": EventFragment;
     "Paused(address)": EventFragment;
+    "RewardAdded(uint256)": EventFragment;
     "RewardsWithdrawn(address,uint256)": EventFragment;
     "RoleAdminChanged(bytes32,bytes32,bytes32)": EventFragment;
     "RoleGranted(bytes32,address,address)": EventFragment;
@@ -348,6 +353,7 @@ export interface StakingContractInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "BeaconUpgraded"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Paused"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "RewardAdded"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RewardsWithdrawn"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RoleAdminChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RoleGranted"): EventFragment;
@@ -392,6 +398,13 @@ export interface PausedEventObject {
 export type PausedEvent = TypedEvent<[string], PausedEventObject>;
 
 export type PausedEventFilter = TypedEventFilter<PausedEvent>;
+
+export interface RewardAddedEventObject {
+  reward: BigNumber;
+}
+export type RewardAddedEvent = TypedEvent<[BigNumber], RewardAddedEventObject>;
+
+export type RewardAddedEventFilter = TypedEventFilter<RewardAddedEvent>;
 
 export interface RewardsWithdrawnEventObject {
   account: string;
@@ -507,7 +520,7 @@ export interface StakingContract extends BaseContract {
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<[string]>;
 
     balanceOf(
-      arg0: PromiseOrValue<string>,
+      account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
@@ -527,6 +540,10 @@ export interface StakingContract extends BaseContract {
       _account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
+
+    exit(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
 
     finishAt(overrides?: CallOverrides): Promise<[BigNumber]>;
 
@@ -649,7 +666,7 @@ export interface StakingContract extends BaseContract {
   DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<string>;
 
   balanceOf(
-    arg0: PromiseOrValue<string>,
+    account: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
@@ -669,6 +686,10 @@ export interface StakingContract extends BaseContract {
     _account: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
+
+  exit(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   finishAt(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -791,7 +812,7 @@ export interface StakingContract extends BaseContract {
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<string>;
 
     balanceOf(
-      arg0: PromiseOrValue<string>,
+      account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -811,6 +832,8 @@ export interface StakingContract extends BaseContract {
       _account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    exit(overrides?: CallOverrides): Promise<void>;
 
     finishAt(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -945,6 +968,9 @@ export interface StakingContract extends BaseContract {
     "Paused(address)"(account?: null): PausedEventFilter;
     Paused(account?: null): PausedEventFilter;
 
+    "RewardAdded(uint256)"(reward?: null): RewardAddedEventFilter;
+    RewardAdded(reward?: null): RewardAddedEventFilter;
+
     "RewardsWithdrawn(address,uint256)"(
       account?: null,
       amount?: null
@@ -1013,7 +1039,7 @@ export interface StakingContract extends BaseContract {
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
 
     balanceOf(
-      arg0: PromiseOrValue<string>,
+      account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -1032,6 +1058,10 @@ export interface StakingContract extends BaseContract {
     earned(
       _account: PromiseOrValue<string>,
       overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    exit(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     finishAt(overrides?: CallOverrides): Promise<BigNumber>;
@@ -1158,7 +1188,7 @@ export interface StakingContract extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     balanceOf(
-      arg0: PromiseOrValue<string>,
+      account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -1177,6 +1207,10 @@ export interface StakingContract extends BaseContract {
     earned(
       _account: PromiseOrValue<string>,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    exit(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     finishAt(overrides?: CallOverrides): Promise<PopulatedTransaction>;

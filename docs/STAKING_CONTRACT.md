@@ -24,14 +24,6 @@ _rewardToken address_
 bytes32 ADMIN_ROLE
 ```
 
-### totalStaked
-
-```solidity
-uint256 totalStaked
-```
-
-_total staked in contract_
-
 ### duration
 
 ```solidity
@@ -72,12 +64,6 @@ uint256 rewardPerTokenStaked
 
 _reward p/token_
 
-### balanceOf
-
-```solidity
-mapping(address => uint256) balanceOf
-```
-
 ### userRewardPerTokenStaked
 
 ```solidity
@@ -89,6 +75,20 @@ mapping(address => uint256) userRewardPerTokenStaked
 ```solidity
 mapping(address => uint256) rewards
 ```
+
+### RewardAdded
+
+```solidity
+event RewardAdded(uint256 reward)
+```
+
+emitted on reward tokens deposited
+
+#### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| reward | uint256 | reward amount |
 
 ### Staked
 
@@ -214,6 +214,107 @@ _sets contract access control_
 | _stakingToken | address | contract address of staking token |
 | _rewardToken | address | contract address of reward token |
 
+### totalStaked
+
+```solidity
+function totalStaked() external view returns (uint256)
+```
+
+returns total staked tokens in contract
+
+### balanceOf
+
+```solidity
+function balanceOf(address account) external view returns (uint256)
+```
+
+returns staked balance of account
+
+### lastTimeRewardApplicable
+
+```solidity
+function lastTimeRewardApplicable() public view returns (uint256)
+```
+
+returns minimum of block.timestamp and finishAt
+
+### rewardPerToken
+
+```solidity
+function rewardPerToken() public view returns (uint256)
+```
+
+returns reward per token
+
+### earned
+
+```solidity
+function earned(address _account) public view returns (uint256)
+```
+
+returns total earned reward amount by account
+
+#### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| _account | address | address of staker |
+
+### stake
+
+```solidity
+function stake(uint256 _amount) external
+```
+
+allows users to stake tokens
+
+_reverts if _amount = 0
+emits Staked event
+allowed when not paused_
+
+#### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| _amount | uint256 | amount of tokens to stake |
+
+### withdrawStake
+
+```solidity
+function withdrawStake(uint256 _amount) public
+```
+
+allows users to withdraw stake
+
+_reverts if _amount = 0
+emits StakeWtihdrawn event
+allowed when not paused_
+
+#### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| _amount | uint256 | amount of user stake to withdraw |
+
+### withdrawRewards
+
+```solidity
+function withdrawRewards() public
+```
+
+allows users to withdraw rewards earned
+
+_reverts if no rewards to claim
+emits RewardsWithdrawn event_
+
+### exit
+
+```solidity
+function exit() external
+```
+
+withdraws stake and rewards
+
 ### _authorizeUpgrade
 
 ```solidity
@@ -282,83 +383,6 @@ only callable by ADMIN_ROLE_
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | _amount | uint256 | rewards deposited into contract to calculate reward rate from |
-
-### stake
-
-```solidity
-function stake(uint256 _amount) external
-```
-
-allows users to stake tokens
-
-_reverts if _amount = 0
-emits Staked event
-allowed when not paused_
-
-#### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| _amount | uint256 | amount of tokens to stake |
-
-### withdrawStake
-
-```solidity
-function withdrawStake(uint256 _amount) external
-```
-
-allows users to withdraw stake
-
-_reverts if _amount = 0
-emits StakeWtihdrawn event
-allowed when not paused_
-
-#### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| _amount | uint256 | amount of user stake to withdraw |
-
-### withdrawRewards
-
-```solidity
-function withdrawRewards() external
-```
-
-allows users to withdraw rewards earned
-
-_reverts if no rewards to claim
-emits RewardsWithdrawn event_
-
-### lastTimeRewardApplicable
-
-```solidity
-function lastTimeRewardApplicable() public view returns (uint256)
-```
-
-returns minimum of block.timestamp and finishAt
-
-### rewardPerToken
-
-```solidity
-function rewardPerToken() public view returns (uint256)
-```
-
-returns reward per token
-
-### earned
-
-```solidity
-function earned(address _account) public view returns (uint256)
-```
-
-returns total earned reward amount by account
-
-#### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| _account | address | address of staker |
 
 ### changeStakingToken
 

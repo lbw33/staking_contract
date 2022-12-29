@@ -24,12 +24,14 @@ contract StakingContract is
     /// @dev rewardToken address
     IERC20Upgradeable public rewardToken;
 
-    /***** Roles *****/
+    /* ========== ACCESS ROLES ========== */
+
     bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
 
-    /***** Variables *****/
+    /* ========== STATE VARIABLES ========== */
+
     /// @dev total staked in contract
-    uint256 public totalStaked;
+    uint256 private _totalStaked;
     /// @dev reward duration
     uint256 public duration;
     /// @dev reward period end
@@ -41,13 +43,17 @@ contract StakingContract is
     /// @dev reward p/token
     uint256 public rewardPerTokenStaked;
 
-    /***** Mappings *****/
+    /* ========== MAPPINGS ========== */
 
-    mapping(address => uint256) public balanceOf;
+    mapping(address => uint256) private _balanceOf;
     mapping(address => uint256) public userRewardPerTokenStaked;
     mapping(address => uint256) public rewards;
 
-    /***** Events *****/
+    /* ========== EVENTS ========== */
+
+    /// @notice emitted on reward tokens deposited
+    /// @param reward reward amount
+    event RewardAdded(uint256 reward);
     /// @notice emitted on staking tokens
     /// @param account address of staker
     /// @param amount stake amount
@@ -61,7 +67,8 @@ contract StakingContract is
     /// @param amount reward amount
     event RewardsWithdrawn(address account, uint256 amount);
 
-    /***** Custom Errors *****/
+    /* ========== ERRORS ========== */
+
     /// @notice triggers if staking token address(0)
     error StakingTokenCannotBeZeroAddress();
     /// @notice triggers if reward token address(0)
@@ -77,7 +84,8 @@ contract StakingContract is
     /// @notice triggers if rewards for address is zero
     error NoRewardsToClaim();
 
-    /***** Modifiers *****/
+    /* ========== MODIFIERS ========== */
+
     modifier updateReward(address _account) {
         rewardPerTokenStaked = rewardPerToken();
         updatedAt = lastTimeRewardApplicable();
@@ -88,6 +96,8 @@ contract StakingContract is
         }
         _;
     }
+
+    /* ========== INITIALIZER ========== */
 
     /// @notice initializes contract
     /// @dev sets contract access control
@@ -111,6 +121,104 @@ contract StakingContract is
         stakingToken = IERC20Upgradeable(_stakingToken);
         rewardToken = IERC20Upgradeable(_rewardToken);
     }
+
+    /* ========== VIEWS ========== */
+
+    /// @notice returns total staked tokens in contract
+    function totalStaked() external view returns (uint256) {
+        return _totalStaked;
+    }
+
+    /// @notice returns staked balance of account
+    function balanceOf(address account) external view returns (uint256) {
+        return _balanceOf[account];
+    }
+
+    /// @notice returns minimum of block.timestamp and finishAt
+    function lastTimeRewardApplicable() public view returns (uint256) {
+        return _min(block.timestamp, finishAt);
+    }
+
+    /// @notice returns reward per token
+    function rewardPerToken() public view returns (uint256) {
+        if (_totalStaked == 0) {
+            return rewardPerTokenStaked;
+        }
+        return
+            rewardPerTokenStaked +
+            (rewardRate * (lastTimeRewardApplicable() - updatedAt) * 1e18) /
+            _totalStaked;
+    }
+
+    /// @notice returns total earned reward amount by account
+    /// @param _account address of staker
+    function earned(address _account) public view returns (uint256) {
+        return
+            (_balanceOf[_account] *
+                (rewardPerToken() - userRewardPerTokenStaked[_account])) /
+            1e18 +
+            rewards[_account];
+    }
+
+    /* ========== MUTATIVE FUNCTIONS ========== */
+
+    /// @notice allows users to stake tokens
+    /// @dev reverts if _amount = 0
+    /// @dev emits Staked event
+    /// @dev allowed when not paused
+    /// @param _amount amount of tokens to stake
+    function stake(uint256 _amount)
+        external
+        whenNotPaused
+        nonReentrant
+        updateReward(msg.sender)
+    {
+        if (_amount <= 0) revert AmountCannotBeZero();
+        stakingToken.safeTransferFrom(msg.sender, address(this), _amount);
+        _balanceOf[msg.sender] += _amount;
+        _totalStaked += _amount;
+        emit Staked(msg.sender, _amount);
+    }
+
+    /// @notice allows users to withdraw stake
+    /// @dev reverts if _amount = 0
+    /// @dev emits StakeWtihdrawn event
+    /// @dev allowed when not paused
+    /// @param _amount amount of user stake to withdraw
+    function withdrawStake(uint256 _amount)
+        public
+        whenNotPaused
+        nonReentrant
+        updateReward(msg.sender)
+    {
+        if (_amount <= 0) revert AmountCannotBeZero();
+        _balanceOf[msg.sender] -= _amount;
+        _totalStaked -= _amount;
+        stakingToken.safeTransfer(msg.sender, _amount);
+        emit StakeWithdrawn(msg.sender, _amount);
+    }
+
+    /// @notice allows users to withdraw rewards earned
+    /// @dev reverts if no rewards to claim
+    /// @dev emits RewardsWithdrawn event
+    function withdrawRewards() public updateReward(msg.sender) {
+        uint256 reward = rewards[msg.sender];
+
+        if (reward <= 0) revert NoRewardsToClaim();
+
+        rewards[msg.sender] = 0;
+        rewardToken.safeTransfer(msg.sender, reward);
+
+        emit RewardsWithdrawn(msg.sender, reward);
+    }
+
+    /// @notice withdraws stake and rewards
+    function exit() external {
+        withdrawStake(_balanceOf[msg.sender]);
+        withdrawRewards();
+    }
+
+    /* ========== RESTRICTED FUNCTIONS ========== */
 
     /// @notice authorise contract upgrade
     /// @dev only callable by ADMIN_ROLE
@@ -171,82 +279,8 @@ contract StakingContract is
 
         finishAt = block.timestamp + duration;
         updatedAt = block.timestamp;
-    }
 
-    /// @notice allows users to stake tokens
-    /// @dev reverts if _amount = 0
-    /// @dev emits Staked event
-    /// @dev allowed when not paused
-    /// @param _amount amount of tokens to stake
-    function stake(uint256 _amount)
-        external
-        whenNotPaused
-        nonReentrant
-        updateReward(msg.sender)
-    {
-        if (_amount <= 0) revert AmountCannotBeZero();
-        stakingToken.safeTransferFrom(msg.sender, address(this), _amount);
-        balanceOf[msg.sender] += _amount;
-        totalStaked += _amount;
-        emit Staked(msg.sender, _amount);
-    }
-
-    /// @notice allows users to withdraw stake
-    /// @dev reverts if _amount = 0
-    /// @dev emits StakeWtihdrawn event
-    /// @dev allowed when not paused
-    /// @param _amount amount of user stake to withdraw
-    function withdrawStake(uint256 _amount)
-        external
-        whenNotPaused
-        nonReentrant
-        updateReward(msg.sender)
-    {
-        if (_amount <= 0) revert AmountCannotBeZero();
-        balanceOf[msg.sender] -= _amount;
-        totalStaked -= _amount;
-        stakingToken.safeTransfer(msg.sender, _amount);
-        emit StakeWithdrawn(msg.sender, _amount);
-    }
-
-    /// @notice allows users to withdraw rewards earned
-    /// @dev reverts if no rewards to claim
-    /// @dev emits RewardsWithdrawn event
-    function withdrawRewards() external updateReward(msg.sender) {
-        uint256 reward = rewards[msg.sender];
-
-        if (reward <= 0) revert NoRewardsToClaim();
-
-        rewards[msg.sender] = 0;
-        rewardToken.safeTransfer(msg.sender, reward);
-
-        emit RewardsWithdrawn(msg.sender, reward);
-    }
-
-    /// @notice returns minimum of block.timestamp and finishAt
-    function lastTimeRewardApplicable() public view returns (uint256) {
-        return _min(block.timestamp, finishAt);
-    }
-
-    /// @notice returns reward per token
-    function rewardPerToken() public view returns (uint256) {
-        if (totalStaked == 0) {
-            return rewardPerTokenStaked;
-        }
-        return
-            rewardPerTokenStaked +
-            (rewardRate * (lastTimeRewardApplicable() - updatedAt) * 1e18) /
-            totalStaked;
-    }
-
-    /// @notice returns total earned reward amount by account
-    /// @param _account address of staker
-    function earned(address _account) public view returns (uint256) {
-        return
-            (balanceOf[_account] *
-                (rewardPerToken() - userRewardPerTokenStaked[_account])) /
-            1e18 +
-            rewards[_account];
+        emit RewardAdded(_amount);
     }
 
     /// @notice changes staking token contract
@@ -274,6 +308,8 @@ contract StakingContract is
         if (_rewardToken == address(0)) revert RewardTokenCannotBeZeroAddress();
         rewardToken = IERC20Upgradeable(_rewardToken);
     }
+
+    /* ========== INTERNAL FUNCTIONS ========== */
 
     /// @notice returns minimum of two numbers
     function _min(uint256 _x, uint256 _y) private pure returns (uint256) {

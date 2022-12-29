@@ -229,6 +229,14 @@ context("Staking Contract", async () => {
       // 50000000000000000n = REWARD_AMOUNT / REWARD_DURATION
       expect(await stakingContract.rewardRate()).eq(50000000000000000n);
     });
+
+    it("should emit event on successful reward deposit", async () => {
+      await rewardToken.transfer(stakingContract.address, REWARD_AMOUNT);
+      await stakingContract.setRewardsDuration(REWARD_DURATION);
+      await expect(stakingContract.notifyRewardAmount(REWARD_AMOUNT))
+        .to.emit(stakingContract, "RewardAdded")
+        .withArgs(REWARD_AMOUNT);
+    });
   });
 
   describe("stake", async () => {
@@ -319,7 +327,6 @@ context("Staking Contract", async () => {
       );
       expect(await stakingContract.totalStaked()).eq(0);
       expect(await stakingContract.balanceOf(user1.address)).eq(0);
-      // TODO: test for updateReward modifier
       expect(await stakingContract.rewardPerTokenStaked()).gt(0);
       const updatedAt = await stakingContract.updatedAt();
       expect(parseInt(updatedAt.toString())).eq(await time.latest());
@@ -381,6 +388,45 @@ context("Staking Contract", async () => {
       await expect(stakingContract.connect(user1).withdrawRewards())
         .to.emit(stakingContract, "RewardsWithdrawn")
         .withArgs(user1.address, rwds.toString());
+    });
+  });
+
+  describe("exit", async () => {
+    beforeEach(async () => {
+      await rewardToken.transfer(stakingContract.address, REWARD_AMOUNT);
+      await stakingContract.setRewardsDuration(REWARD_DURATION);
+      await stakingContract.notifyRewardAmount(REWARD_AMOUNT);
+      await stakingContract.connect(user1).stake(STAKE_AMOUNT);
+    });
+
+    it("should withdraw stake and rewards", async () => {
+      // increase time to accrue rewards
+      await time.increase(60);
+      // record balances before withdrawal
+      const user1StkPreBal = await stakeToken.balanceOf(user1.address);
+      const user1RwdPreBal = await rewardToken.balanceOf(user1.address);
+      const stakingContractStkPreBal = await stakeToken.balanceOf(
+        stakingContract.address
+      );
+      const stakingContractRwdPreBal = await rewardToken.balanceOf(
+        stakingContract.address
+      );
+      // exit
+      await stakingContract.connect(user1).exit();
+      // record balances after withdrawal
+      const user1StkPostBal = await stakeToken.balanceOf(user1.address);
+      const user1RwdPostBal = await rewardToken.balanceOf(user1.address);
+      const stakingContractStkPostBal = await stakeToken.balanceOf(
+        stakingContract.address
+      );
+      const stakingContractRwdPostBal = await rewardToken.balanceOf(
+        stakingContract.address
+      );
+      expect(user1StkPostBal).gt(user1StkPreBal);
+      expect(user1RwdPostBal).gt(user1RwdPreBal);
+      expect(stakingContractStkPostBal).lt(stakingContractStkPreBal);
+      expect(stakingContractRwdPostBal).lt(stakingContractRwdPreBal);
+      expect(await stakingContract.rewards(user1.address)).eq(0);
     });
   });
 
