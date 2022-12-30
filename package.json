@@ -1,7 +1,7 @@
 {
-  "name": "staking_contract",
+  "name": "vampire_defi",
   "version": "1.0.0",
-  "description": "Simple staking contract",
+  "description": "Vampire DeFi ecosystem",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,9 +11,13 @@
     "url": "git+https://github.com/lbw33/staking_contract.git"
   },
   "keywords": [
+    "vampire",
+    "soldity",
+    "erc20",
     "staking",
-    "contract",
-    "erc20"
+    "stake",
+    "blood",
+    "defi"
   ],
   "author": "lbw33",
   "license": "MIT",

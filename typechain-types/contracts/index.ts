@@ -5,4 +5,7 @@ import type * as helpers from "./helpers";
 export type { helpers };
 import type * as interfaces from "./interfaces";
 export type { interfaces };
-export type { StakingContract } from "./StakingContract";
+import type * as staking from "./staking";
+export type { staking };
+import type * as tokens from "./tokens";
+export type { tokens };

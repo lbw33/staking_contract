@@ -1,7 +1,17 @@
-# folders
+# node
 node_modules
+
+# hardhat
+.hardhat
+
+# artifacts
 artifacts
+
+# cache
 cache
+
+# oz
+.openzeppelin
 
 # local env files
 .env.local

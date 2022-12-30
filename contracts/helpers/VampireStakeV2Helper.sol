@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.15;
 import "@openzeppelin/contracts-upgradeable/token/ERC20/utils/SafeERC20Upgradeable.sol";
-import "../StakingContract.sol";
+import "../staking/VampireStake.sol";
 
-contract StakingContractV2Test is StakingContract {
+contract VampireStakeV2Helper is VampireStake {
     using SafeERC20Upgradeable for IERC20Upgradeable;
 
-    function testFN() public pure returns (uint256) {
+    function unluckyNumber() public pure returns (uint256) {
         return 13;
     }
 
@@ -19,11 +19,11 @@ contract StakingContractV2Test is StakingContract {
         IERC20Upgradeable(_token).transferFrom(address(this), _to, _amount);
     }
 
-    function setFinishAt(uint256 _finish) public {
-        finishAt = _finish;
+    function setHuntOver(uint256 _huntOver) public {
+        huntOver = _huntOver;
     }
 
-    function setRewardRate(uint256 _rate) public {
-        rewardRate = _rate;
+    function setBleedRate(uint256 _bleedRate) public {
+        bleedRate = _bleedRate;
     }
 }

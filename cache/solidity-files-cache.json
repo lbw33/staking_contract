@@ -1,50 +1,6 @@
 {
   "_format": "hh-sol-cache-2",
   "files": {
-    "/Users/lukewickens-pillar/Documents/personal_projects/staking_contract/contracts/StakingContract.sol": {
-      "lastModificationDate": 1672356991923,
-      "contentHash": "1ad58c859c26a0b24eb9757f894def4b",
-      "sourceName": "contracts/StakingContract.sol",
-      "solcConfig": {
-        "version": "0.8.15",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol",
-        "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol",
-        "@openzeppelin/contracts-upgradeable/token/ERC20/utils/SafeERC20Upgradeable.sol",
-        "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol",
-        "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol",
-        "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol",
-        "./interfaces/IStakingContract.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.15"
-      ],
-      "artifacts": [
-        "StakingContract"
-      ]
-    },
     "/Users/lukewickens-pillar/Documents/personal_projects/staking_contract/node_modules/hardhat/console.sol": {
       "lastModificationDate": 1672150527988,
       "contentHash": "4ff3cd2f6272c9a6516e9ee4f2b967d3",
@@ -987,10 +943,10 @@
         "IERC20Metadata"
       ]
     },
-    "/Users/lukewickens-pillar/Documents/personal_projects/staking_contract/contracts/helpers/StakingContractV2Test.sol": {
-      "lastModificationDate": 1672225834440,
-      "contentHash": "b068a68c3fe536c45de7575de9d58f2f",
-      "sourceName": "contracts/helpers/StakingContractV2Test.sol",
+    "/Users/lukewickens-pillar/Documents/personal_projects/staking_contract/contracts/helpers/VampireStakeV2Helper.sol": {
+      "lastModificationDate": 1672412457045,
+      "contentHash": "965a7fe0139d64fe3ec4c61f5c2454ae",
+      "sourceName": "contracts/helpers/VampireStakeV2Helper.sol",
       "solcConfig": {
         "version": "0.8.15",
         "settings": {
@@ -1017,19 +973,65 @@
       },
       "imports": [
         "@openzeppelin/contracts-upgradeable/token/ERC20/utils/SafeERC20Upgradeable.sol",
-        "../StakingContract.sol"
+        "../staking/VampireStake.sol"
       ],
       "versionPragmas": [
         "^0.8.15"
       ],
       "artifacts": [
-        "StakingContractV2Test"
+        "VampireStakeV2Helper"
       ]
     },
-    "/Users/lukewickens-pillar/Documents/personal_projects/staking_contract/contracts/interfaces/IStakingContract.sol": {
-      "lastModificationDate": 1672334934643,
-      "contentHash": "45e4c47ff314bfdd977dcdf1f5bd92da",
-      "sourceName": "contracts/interfaces/IStakingContract.sol",
+    "/Users/lukewickens-pillar/Documents/personal_projects/staking_contract/contracts/staking/VampireStake.sol": {
+      "lastModificationDate": 1672437779845,
+      "contentHash": "1e32a07b52af1834e477f01c42d92495",
+      "sourceName": "contracts/staking/VampireStake.sol",
+      "solcConfig": {
+        "version": "0.8.15",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol",
+        "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol",
+        "@openzeppelin/contracts-upgradeable/token/ERC20/utils/SafeERC20Upgradeable.sol",
+        "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol",
+        "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol",
+        "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol",
+        "../interfaces/IVampireStake.sol",
+        "../tokens/VampireStakeToken.sol",
+        "../tokens/VampireBloodToken.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.15"
+      ],
+      "artifacts": [
+        "VampireStake"
+      ]
+    },
+    "/Users/lukewickens-pillar/Documents/personal_projects/staking_contract/contracts/interfaces/IVampireStake.sol": {
+      "lastModificationDate": 1672411959160,
+      "contentHash": "b29b0f4de03e397372a7094e83170a02",
+      "sourceName": "contracts/interfaces/IVampireStake.sol",
       "solcConfig": {
         "version": "0.8.15",
         "settings": {
@@ -1059,7 +1061,679 @@
         "^0.8.15"
       ],
       "artifacts": [
-        "IStakingContract"
+        "IVampireStake"
+      ]
+    },
+    "/Users/lukewickens-pillar/Documents/personal_projects/staking_contract/node_modules/@openzeppelin/contracts-upgradeable/token/ERC20/extensions/draft-ERC20PermitUpgradeable.sol": {
+      "lastModificationDate": 1672150608158,
+      "contentHash": "8bce39d1c92a8a00597c31ef2fe40eb1",
+      "sourceName": "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/draft-ERC20PermitUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.15",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./draft-IERC20PermitUpgradeable.sol",
+        "../ERC20Upgradeable.sol",
+        "../../../utils/cryptography/ECDSAUpgradeable.sol",
+        "../../../utils/cryptography/EIP712Upgradeable.sol",
+        "../../../utils/CountersUpgradeable.sol",
+        "../../../proxy/utils/Initializable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ERC20PermitUpgradeable"
+      ]
+    },
+    "/Users/lukewickens-pillar/Documents/personal_projects/staking_contract/node_modules/@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol": {
+      "lastModificationDate": 1672150608165,
+      "contentHash": "3731d62752408e56578b89ac293659c6",
+      "sourceName": "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.15",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./IERC20Upgradeable.sol",
+        "./extensions/IERC20MetadataUpgradeable.sol",
+        "../../utils/ContextUpgradeable.sol",
+        "../../proxy/utils/Initializable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ERC20Upgradeable"
+      ]
+    },
+    "/Users/lukewickens-pillar/Documents/personal_projects/staking_contract/node_modules/@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol": {
+      "lastModificationDate": 1672150608155,
+      "contentHash": "2e908c762a799baea365e68a50500e2c",
+      "sourceName": "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.15",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "CountersUpgradeable"
+      ]
+    },
+    "/Users/lukewickens-pillar/Documents/personal_projects/staking_contract/node_modules/@openzeppelin/contracts-upgradeable/utils/cryptography/ECDSAUpgradeable.sol": {
+      "lastModificationDate": 1672150608159,
+      "contentHash": "b3e120a8002394aabbbc467369cd7390",
+      "sourceName": "@openzeppelin/contracts-upgradeable/utils/cryptography/ECDSAUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.15",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../StringsUpgradeable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ECDSAUpgradeable"
+      ]
+    },
+    "/Users/lukewickens-pillar/Documents/personal_projects/staking_contract/node_modules/@openzeppelin/contracts-upgradeable/utils/cryptography/EIP712Upgradeable.sol": {
+      "lastModificationDate": 1672150608160,
+      "contentHash": "4022a2f2e92f5c281d1a2cdae10a9e6b",
+      "sourceName": "@openzeppelin/contracts-upgradeable/utils/cryptography/EIP712Upgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.15",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./ECDSAUpgradeable.sol",
+        "../../proxy/utils/Initializable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "EIP712Upgradeable"
+      ]
+    },
+    "/Users/lukewickens-pillar/Documents/personal_projects/staking_contract/node_modules/@openzeppelin/contracts-upgradeable/token/ERC20/extensions/IERC20MetadataUpgradeable.sol": {
+      "lastModificationDate": 1672150608185,
+      "contentHash": "9efcd5467a7f0bf533910ee8a267adb2",
+      "sourceName": "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/IERC20MetadataUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.15",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../IERC20Upgradeable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IERC20MetadataUpgradeable"
+      ]
+    },
+    "/Users/lukewickens-pillar/Documents/personal_projects/staking_contract/node_modules/@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20VotesUpgradeable.sol": {
+      "lastModificationDate": 1672150608166,
+      "contentHash": "7d4be7fcaac0d92168c70737f03e00be",
+      "sourceName": "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20VotesUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.15",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./draft-ERC20PermitUpgradeable.sol",
+        "../../../utils/math/MathUpgradeable.sol",
+        "../../../governance/utils/IVotesUpgradeable.sol",
+        "../../../utils/math/SafeCastUpgradeable.sol",
+        "../../../utils/cryptography/ECDSAUpgradeable.sol",
+        "../../../proxy/utils/Initializable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ERC20VotesUpgradeable"
+      ]
+    },
+    "/Users/lukewickens-pillar/Documents/personal_projects/staking_contract/node_modules/@openzeppelin/contracts-upgradeable/governance/utils/IVotesUpgradeable.sol": {
+      "lastModificationDate": 1672150608193,
+      "contentHash": "432a27bbcb26badb3d40e9fb214d09f9",
+      "sourceName": "@openzeppelin/contracts-upgradeable/governance/utils/IVotesUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.15",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IVotesUpgradeable"
+      ]
+    },
+    "/Users/lukewickens-pillar/Documents/personal_projects/staking_contract/node_modules/@openzeppelin/contracts-upgradeable/utils/math/SafeCastUpgradeable.sol": {
+      "lastModificationDate": 1672150608197,
+      "contentHash": "8565f9d83dfbed34d9ff896c02e23ae7",
+      "sourceName": "@openzeppelin/contracts-upgradeable/utils/math/SafeCastUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.15",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "SafeCastUpgradeable"
+      ]
+    },
+    "/Users/lukewickens-pillar/Documents/personal_projects/staking_contract/node_modules/@openzeppelin/contracts-upgradeable/utils/ArraysUpgradeable.sol": {
+      "lastModificationDate": 1672150608153,
+      "contentHash": "31fffb993d9fd31108d170b5abe5a484",
+      "sourceName": "@openzeppelin/contracts-upgradeable/utils/ArraysUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.15",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./StorageSlotUpgradeable.sol",
+        "./math/MathUpgradeable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ArraysUpgradeable"
+      ]
+    },
+    "/Users/lukewickens-pillar/Documents/personal_projects/staking_contract/node_modules/@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20BurnableUpgradeable.sol": {
+      "lastModificationDate": 1672150608163,
+      "contentHash": "8c58ae2b48b49da0634bc2db620540cf",
+      "sourceName": "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20BurnableUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.15",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../ERC20Upgradeable.sol",
+        "../../../utils/ContextUpgradeable.sol",
+        "../../../proxy/utils/Initializable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ERC20BurnableUpgradeable"
+      ]
+    },
+    "/Users/lukewickens-pillar/Documents/personal_projects/staking_contract/node_modules/@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20SnapshotUpgradeable.sol": {
+      "lastModificationDate": 1672150608165,
+      "contentHash": "5497a3b10bfe129d0f154b8923da73c3",
+      "sourceName": "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20SnapshotUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.15",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../ERC20Upgradeable.sol",
+        "../../../utils/ArraysUpgradeable.sol",
+        "../../../utils/CountersUpgradeable.sol",
+        "../../../proxy/utils/Initializable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ERC20SnapshotUpgradeable"
+      ]
+    },
+    "/Users/lukewickens-pillar/Documents/personal_projects/staking_contract/node_modules/@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20FlashMintUpgradeable.sol": {
+      "lastModificationDate": 1672150608163,
+      "contentHash": "efe733ef08edc418cf7c4622ad9e687b",
+      "sourceName": "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20FlashMintUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.15",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../../../interfaces/IERC3156FlashBorrowerUpgradeable.sol",
+        "../../../interfaces/IERC3156FlashLenderUpgradeable.sol",
+        "../ERC20Upgradeable.sol",
+        "../../../proxy/utils/Initializable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ERC20FlashMintUpgradeable"
+      ]
+    },
+    "/Users/lukewickens-pillar/Documents/personal_projects/staking_contract/node_modules/@openzeppelin/contracts-upgradeable/interfaces/IERC3156FlashBorrowerUpgradeable.sol": {
+      "lastModificationDate": 1672150608186,
+      "contentHash": "b5b789995681757cf9c90c73660b88f7",
+      "sourceName": "@openzeppelin/contracts-upgradeable/interfaces/IERC3156FlashBorrowerUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.15",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IERC3156FlashBorrowerUpgradeable"
+      ]
+    },
+    "/Users/lukewickens-pillar/Documents/personal_projects/staking_contract/node_modules/@openzeppelin/contracts-upgradeable/interfaces/IERC3156FlashLenderUpgradeable.sol": {
+      "lastModificationDate": 1672150608187,
+      "contentHash": "adc444881711c4598df91357e1800d81",
+      "sourceName": "@openzeppelin/contracts-upgradeable/interfaces/IERC3156FlashLenderUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.15",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./IERC3156FlashBorrowerUpgradeable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IERC3156FlashLenderUpgradeable"
+      ]
+    },
+    "/Users/lukewickens-pillar/Documents/personal_projects/staking_contract/contracts/tokens/VampireStakeToken.sol": {
+      "lastModificationDate": 1672437576497,
+      "contentHash": "90f3e67fca9877013ace9ba6652dff08",
+      "sourceName": "contracts/tokens/VampireStakeToken.sol",
+      "solcConfig": {
+        "version": "0.8.15",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol",
+        "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20BurnableUpgradeable.sol",
+        "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol",
+        "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol",
+        "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20FlashMintUpgradeable.sol",
+        "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol",
+        "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.15"
+      ],
+      "artifacts": [
+        "VampireStakeToken"
+      ]
+    },
+    "/Users/lukewickens-pillar/Documents/personal_projects/staking_contract/contracts/tokens/VampireBloodToken.sol": {
+      "lastModificationDate": 1672437556779,
+      "contentHash": "75a6ebd9a635cef2b6411f5faab27c47",
+      "sourceName": "contracts/tokens/VampireBloodToken.sol",
+      "solcConfig": {
+        "version": "0.8.15",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol",
+        "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20BurnableUpgradeable.sol",
+        "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol",
+        "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol",
+        "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol",
+        "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.15"
+      ],
+      "artifacts": [
+        "VampireBloodToken"
       ]
     }
   }

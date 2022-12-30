@@ -1,6 +1,12 @@
-# StakingContract
+# (㇏(•̀ᵥᵥ•́)ノ)
+# Vampire DeFi Ecosystem
 
 ## Development
+
+* Currently under development.  
+  * STAKE Token (ecosystem token) - Done.
+  * BLOOD Token (ecosystem token) - Done.
+  * VampireStake (staking platform) - Done.
 
 ### Install dependencies
 
